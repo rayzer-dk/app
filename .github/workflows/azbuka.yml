@@ -1,0 +1,39 @@
+name: Azbuka PWA checks
+on:
+  push:
+    paths:
+      - 'azbuka/**'
+      - 'Azbuka_Adventure_*.zip'
+      - '.github/workflows/azbuka.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check patch scripts
+        run: python3 -m py_compile azbuka/upgrade.py azbuka/verify.py
+      - name: Build and verify complete application
+        shell: bash
+        run: |
+          mkdir -p /tmp/azbuka-build
+          if [[ -f Azbuka_Adventure_Server_v0.6.2.zip ]]; then
+            unzip -q Azbuka_Adventure_Server_v0.6.2.zip -d /tmp/azbuka-build
+            python3 azbuka/upgrade.py /tmp/azbuka-build
+            python3 azbuka/verify.py /tmp/azbuka-build Azbuka_Adventure_Server_v0.6.2.zip
+          elif [[ -f Azbuka_Adventure_Server_v0.7.0.zip ]]; then
+            unzip -q Azbuka_Adventure_Server_v0.7.0.zip -d /tmp/azbuka-build
+            python3 azbuka/verify.py /tmp/azbuka-build
+          else
+            echo "::error::Full archive missing. Patch scripts are checked, but application tests cannot run until the original or updated archive is added."
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Azbuka_Adventure_Server_v0.7.0
+          path: /tmp/azbuka-build
