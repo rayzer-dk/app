@@ -27,8 +27,8 @@ try{
     await ctx.addInitScript(()=>{if(!localStorage.getItem('luko-progress'))localStorage.setItem('luko-progress',JSON.stringify({b038:{done:true,percent:100,updated:12},b059:{percent:25,updated:13},b052:{percent:0,updated:14}}));});
     const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(String(e)));
     await page.goto(file?pathToFileURL(join(local,'index.html')).href:'http://127.0.0.1:'+server.address().port+'/library/');
-    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='416');
-    for(const [view,count] of [['done',1],['continue',1],['offline',416],['all',416]]){
+    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='433');
+    for(const [view,count] of [['done',1],['continue',1],['offline',433],['all',433]]){
      await page.locator('#search').fill('ненайденный текст');
      await page.locator('[data-stat-view="'+view+'"]').click();
      await page.waitForFunction(n=>document.querySelector('#result-count').textContent.startsWith(n+' '),count);
@@ -59,7 +59,7 @@ try{
     assert.equal(await page.locator('#view-compact').getAttribute('aria-pressed'),'true');
     assert(await page.locator('#books').evaluate(el=>el.classList.contains('compact-mode')));
     await page.reload();
-    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='416');
+    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='433');
     assert.equal(await page.locator('#view-compact').getAttribute('aria-pressed'),'true');
     await page.locator('#view-grid').click();
     const favorite=page.locator('#books [data-fav]').first();
@@ -77,7 +77,7 @@ try{
     if(!file){
      await page.waitForFunction(()=>navigator.serviceWorker.controller!==null,{},{timeout:180000});
      await ctx.setOffline(true);await page.reload();
-     await page.waitForFunction(()=>document.querySelector('#stat-all').textContent==='416');
+     await page.waitForFunction(()=>document.querySelector('#stat-all').textContent==='433');
     }
     await page.locator('[data-stat-view="all"]').click();
     await page.locator('#search').fill('Сивка-бурка');
@@ -87,12 +87,14 @@ try{
     await page.locator('#reader-back').click();
     await page.waitForSelector('#reader',{state:'hidden'});
     await page.locator('[data-stat-view="all"]').click();
+    await page.evaluate(()=>{window.__lukoTestRandom=Math.random;Math.random=()=>0;});
     await page.locator('#surprise-book').click();
+    await page.evaluate(()=>{Math.random=window.__lukoTestRandom;delete window.__lukoTestRandom;});
     await page.waitForSelector('#reading-text [data-para]');
     await page.locator('#reader-back').click();
     await page.waitForSelector('#reader',{state:'hidden'});
     await page.locator('[data-tab="Новинки"]').click();
-    await page.waitForFunction(()=>document.querySelector('#result-count').textContent.startsWith('12 '));
+    await page.waitForFunction(()=>document.querySelector('#result-count').textContent.startsWith('29 '));
     await page.locator('#books [data-open="n1003"]').click();
     await page.waitForSelector('#reading-text [data-para]');
     assert.equal(await page.locator('#reader-title').innerText(),'Карлик Нос');
@@ -107,11 +109,14 @@ try{
     await page.locator('#save-position').click();
     await page.locator('#bookmark-add').click();
     assert.equal(await page.locator('[data-jump-bookmark]').count(),2);
+    assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('luko-progress')).n1003.bookmarks.length),2);
     await page.locator('#reader-tools-dialog button[value="cancel"]').click();
     await page.locator('#reader-back').click();
     await page.waitForSelector('#reader',{state:'hidden'});
+    await page.waitForFunction(()=>!history.state?.lukoReader);
     await page.reload();
-    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='416');
+    await page.waitForFunction(()=>JSON.parse(localStorage.getItem('luko-progress')||'{}').n1003?.bookmarks?.length===2);
+    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='433');
     await page.locator('[data-tab="Новинки"]').click();
     await page.locator('#books [data-open="n1003"]').click();
     await page.waitForSelector('#reading-text [data-para]');
@@ -130,6 +135,15 @@ try{
     assert.equal(await page.locator('#reader-title').innerText(),'Дети капитана Гранта');
     assert(await page.locator('#reading-text [data-para]').count()>1000);
     if(!file){await page.screenshot({path:'dist/visual/reader-'+width+'.png',animations:'disabled'});}
+    await page.locator('#reader-back').click();
+    await page.waitForSelector('#reader',{state:'hidden'});
+    await page.waitForFunction(()=>!history.state?.lukoReader);
+    await page.locator('[data-stat-view="all"]').click();
+    await page.locator('#search').fill('Маленький Мук');
+    await page.locator('#books [data-open="n13001"]').click();
+    await page.waitForSelector('#reading-text [data-para]');
+    assert.equal(await page.locator('#reader-title').innerText(),'Маленький Мук');
+    assert(await page.locator('#reading-text [data-para]').count()>35);
     await page.locator('#reader-back').click();
     await page.waitForSelector('#reader',{state:'hidden'});
     assert.deepEqual(errors,[]);

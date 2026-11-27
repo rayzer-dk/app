@@ -16,7 +16,7 @@ def fetch(spec):
     url='https://ru.wikisource.org/w/api.php?'+args
     for i in range(3):
         try:
-            request=urllib.request.Request(url,headers={'User-Agent':'LukomoryeLibrary/1.12 (https://github.com/rayzer-dk/app; public-domain offline reader)','Accept':'application/json'})
+            request=urllib.request.Request(url,headers={'User-Agent':'LukomoryeLibrary/1.13 (https://github.com/rayzer-dk/app; public-domain offline reader)','Accept':'application/json'})
             with urllib.request.urlopen(request,timeout=35) as response:
                 data=json.loads(response.read(15*1024*1024))
             parsed=data['parse']
@@ -43,6 +43,8 @@ def extract(html,spec):
         if re.match(r'^(Примечания|Примѣчанія|Примечание|Литература|Источники|Библиография)(\s|$)',text,re.I) and tag.startswith('h'):break
         if re.match(r'^(Содержание|Оглавление|Содержаніе|Оглавленіе|Эта страница|Это произведение|Источник:|Автор:|Перевод:|Текст доступен)',text,re.I):continue
         blocks.append({'tag':tag,'text':text})
+    if spec['id'].startswith('n130'):
+        blocks=[b for b in blocks if not re.match(r'^(Оригинал находится здесь:|Текст приведен по изданию:|Текст приведён по изданию:|Сказка$|Это произведение|Если произведение является переводом)',b['text'],re.I)]
     # Validate complete narrative ending, not merely a title or index.
     marker=normalize(spec['end'])
     match=[i for i,b in enumerate(blocks) if marker in normalize(b['text'])]
@@ -98,6 +100,10 @@ def upgrade_content(out):
         b.update(minutes=max(1,math.ceil(count/120)),reference=spec['edition'],descriptionType='annotation',collections=list(dict.fromkeys(['Новинки',*spec['collections']])),textRevision=1)
         if spec['id']=='n1002':b['aliases']=['Вокруг света в восемьдесят дней']
         if spec['id']=='n1004':b['aliases']=['Рассказ о калифе аисте']
+        if spec['id']=='n13006':b['aliases']=['Оле-Закрой Глазки']
+        if spec['id']=='n13012':b['aliases']=['Николай и Николка']
+        if spec['id']=='n13014':b['aliases']=['Принц и ласточка','Счастливый принц']
+        if spec['id']=='n13015':b['aliases']=['Дитя-Звезда','Мальчик-звезда']
         index[b['id']]={'words':count};additions.append(b);seen.add(titlekey(b['title']))
         report.append({'id':b['id'],'title':b['title'],'revision':spec['revision'],'words':count,'sha256':hashlib.sha256((out/'books'/f"{b['id']}.json").read_bytes()).hexdigest(),'sourceUrl':doc['sourceUrl'],'edition':doc['edition']})
         print('Imported',b['title'],count,'words',flush=True)
@@ -107,7 +113,7 @@ def upgrade_content(out):
     (out/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     (out/'catalog.js').write_text('window.LUKO_CATALOG = '+compact(catalog)+';\nwindow.LUKO_RETIRED_IDS = '+retired,encoding='utf-8')
     (out/'book-index.js').write_text('window.LUKO_BOOK_INDEX='+compact(index)+';\n',encoding='utf-8')
-    (out/'CONTENT_REVIEW.json').write_text(json.dumps({'version':'1.12.0','total':TOTAL,'new':report,**counts},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    (out/'CONTENT_REVIEW.json').write_text(json.dumps({'version':'1.13.0','total':TOTAL,'new':report,**counts},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     p=out/'app.js';s=p.read_text(encoding='utf-8')
     old="const categories=['Русские народные','Сказки писателей','Приключения','Детские рассказы','Поучительные сказки','Сказки мира','Мои книги'];"
     new="const categories=['Лучшее','Новинки','Русские народные','Сказки писателей','Приключения','Детские рассказы','О животных','Волшебные сказки','Путешествия','Познавательное','Перед сном','Смешное','Поучительные сказки','Сказки мира','Мои книги'];\nObject.assign(categoryIcon,{'Лучшее':'sparkles','Новинки':'bookmark-check','О животных':'heart','Волшебные сказки':'sparkles','Путешествия':'compass','Познавательное':'book-text','Перед сном':'moon','Смешное':'book-open'});"

@@ -5,12 +5,12 @@ import {createHash} from 'node:crypto';
 import vm from 'node:vm';
 const server='dist/server',local='dist/offline';
 const json=p=>JSON.parse(read(p,'utf8'));
-test('416 complete books, correct Russian catalogue, retired ids and both distributions',()=>{
+test('433 complete books, correct Russian catalogue, retired ids and both distributions',()=>{
  const catalog=json(join(server,'catalog.json'));
- expect(catalog).toHaveLength(416);expect(new Set(catalog.map(b=>b.id)).size).toBe(416);
+ expect(catalog).toHaveLength(433);expect(new Set(catalog.map(b=>b.id)).size).toBe(433);
  expect(catalog.every(b=>b.language==='ru'&&b.category!=='Басни')).toBe(true);
  const review=json(join(server,'CATALOG_REVIEW.json'));expect(Object.keys(review.removed)).toHaveLength(163);
- expect(readdirSync(join(server,'books'))).toHaveLength(416);expect(readdirSync(join(local,'books'))).toHaveLength(416);
+ expect(readdirSync(join(server,'books'))).toHaveLength(433);expect(readdirSync(join(local,'books'))).toHaveLength(433);
  for(const book of catalog){
   const doc=json(join(server,'books',book.id+'.json'));expect(doc.id).toBe(book.id);expect(doc.blocks.length).toBeGreaterThan(0);
   let actual;vm.runInNewContext(read(join(local,'books',book.id+'.js'),'utf8'),{window:{LUKO_ACCEPT_BOOK:(id,d)=>{expect(id).toBe(book.id);actual=JSON.stringify(d);}}});
@@ -19,22 +19,22 @@ test('416 complete books, correct Russian catalogue, retired ids and both distri
 });
 test('all precached files are present and their final bytes match SHA-256',()=>{
  const hashes=json('dist/integrity.json');
- expect(Object.keys(hashes).filter(n=>n.startsWith('books/'))).toHaveLength(416);
+ expect(Object.keys(hashes).filter(n=>n.startsWith('books/'))).toHaveLength(433);
  for(const [name,digest] of Object.entries(hashes))expect('sha256-'+createHash('sha256').update(read(join(server,name))).digest('base64')).toBe(digest);
  expect(read(join(server,'offline-shell.txt'),'utf8')).toBe(read(join(server,'index.html'),'utf8'));
  expect(existsSync(join(server,'sw.js'))).toBe(true);
- expect(json(join(server,'version.json')).version).toBe('1.12.2');
+ expect(json(join(server,'version.json')).version).toBe('1.13.0');
  expect(read(join(local,'index.html'),'utf8')).not.toContain('type="module"');
 });
 
 test('curated collections, new books and verified editions',()=>{
  const catalog=json(join(server,'catalog.json')),report=json(join(server,'CONTENT_REVIEW.json'));
- expect(report.total).toBe(416);
- expect(report.new).toHaveLength(12);
+ expect(report.total).toBe(433);
+ expect(report.new).toHaveLength(29);
  expect(report.annotations).toBeGreaterThan(65);
  expect(report.previews).toBeGreaterThan(100);
  const newBooks=catalog.filter(b=>b.collections.includes('Новинки'));
- expect(newBooks).toHaveLength(12);
+ expect(newBooks).toHaveLength(29);
  for(const name of ['Лучшее','О животных','Волшебные сказки','Перед сном','Смешное','Путешествия','Познавательное']){
   expect(catalog.some(b=>b.collections.includes(name))).toBe(true);
  }
@@ -56,4 +56,10 @@ test('historical artwork is local, attributed and identical in both distribution
   expect(read(join(local,art.path))).toEqual(data);
   expect(json('dist/integrity.json')[art.path]).toBeTruthy();
  }
+});
+
+test('seventeen additional fairy tales, complete bilingual-free Russian texts and annotations',()=>{
+ const catalog=json(join(server,'catalog.json'));const added=catalog.filter(b=>b.id.startsWith('n130'));
+ expect(added).toHaveLength(17);
+ for(const b of added){expect(b.category).toBe('Сказки писателей');expect(b.descriptionType).toBe('annotation');expect(b.description.length).toBeGreaterThan(45);expect(b.collections.includes('Новинки')).toBe(true);const d=json(join(server,'books',b.id+'.json'));expect(d.words).toBeGreaterThan(350);expect(d.blocks.length).toBeGreaterThan(9);expect(d.sourceUrl).toBe('https://ru.wikisource.org/w/index.php?oldid='+b.revision);}
 });
