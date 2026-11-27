@@ -32,7 +32,7 @@ mkdirSync(server,{recursive:true});mkdirSync(local,{recursive:true});
 const common={configFile:false,root:source,base:'./',publicDir:false,mode:'production',define:{'process.env.NODE_ENV':JSON.stringify('production')}};
 const options={target:'es2022',sourcemap:false,assetsInlineLimit:0,reportCompressedSize:false};
 await build({...common,build:{...options,outDir:server,emptyOutDir:false,rollupOptions:{input:{index:join(source,'index.html'),update:join(source,'update.html')}}}});
-await build({...common,build:{...options,outDir:local,emptyOutDir:false,lib:{entry:appPath,name:'LukomoryeApp',formats:['iife'],fileName:()=> 'app.js'}}}});
+await build({...common,build:{...options,outDir:local,emptyOutDir:false,lib:{entry:appPath,name:'LukomoryeApp',formats:['iife'],fileName:()=> 'app.js'}}});
 assert(existsSync(join(local,'app.js')),'Missing classic script bundle');
 for(const dest of [server,local]){
  for(const file of ['icons','catalog.json','CATALOG_REVIEW.json','README.txt','version.json']) cpSync(join(source,file),join(dest,file),{recursive:true});
@@ -64,7 +64,7 @@ assert.equal(files.filter(f=>f.startsWith('books/')).length,404);
 const fingerprint=sha(JSON.stringify(integrity)).digest('hex').slice(0,16);
 const worker=read(join(root,'worker.js'),'utf8').replace('__LUKO_ASSETS__',JSON.stringify(integrity)).replace('__LUKO_VERSION__',JSON.stringify(version)).replace('__LUKO_FINGERPRINT__',JSON.stringify(fingerprint));
 const entry=join(source,'sw-generated.js');write(entry,worker);
-await build({...common,build:{...options,outDir:server,emptyOutDir:false,lib:{entry,name:'LukomoryeWorker',formats:['iife'],fileName:()=> 'sw.js'}}}});
+await build({...common,build:{...options,outDir:server,emptyOutDir:false,lib:{entry,name:'LukomoryeWorker',formats:['iife'],fileName:()=> 'sw.js'}}});
 assert(existsSync(join(server,'sw.js')));
 write(join(dist,'integrity.json'),JSON.stringify(integrity,null,2)+'\n');
 console.log('Built '+version+': '+files.length+' verified PWA resources, 404 books, local file edition');
