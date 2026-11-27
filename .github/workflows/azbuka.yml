@@ -4,6 +4,7 @@ on:
     paths:
       - 'azbuka/**'
       - 'Azbuka_Adventure_*.zip'
+      - 'Azbuka_Adventure_*.zip.part*'
       - '.github/workflows/azbuka.yml'
   workflow_dispatch:
 permissions:
@@ -29,10 +30,23 @@ jobs:
           elif [[ -f Azbuka_Adventure_Server_v0.7.0.zip ]]; then
             unzip -q Azbuka_Adventure_Server_v0.7.0.zip -d /tmp/azbuka-build
             python3 azbuka/verify.py /tmp/azbuka-build
+          elif [[ -f Azbuka_Adventure_Server_v0.7.0.zip.part01 && -f Azbuka_Adventure_Server_v0.7.0.zip.part02 && -f Azbuka_Adventure_Server_v0.7.0.zip.part03 ]]; then
+            cat Azbuka_Adventure_Server_v0.7.0.zip.part{01,02,03} > /tmp/azbuka-v0.7.0.zip
+            echo '4668568965495fea7bdbbb3c4068827a901b850d541201e609e829c517e198b2  /tmp/azbuka-v0.7.0.zip' | sha256sum -c -
+            unzip -q /tmp/azbuka-v0.7.0.zip -d /tmp/azbuka-build
+            python3 azbuka/verify.py /tmp/azbuka-build
           else
             echo "::error::Full archive missing. Patch scripts are checked, but application tests cannot run until the original or updated archive is added."
             exit 1
           fi
+      - name: Install browser test tools
+        run: |
+          python3 -m pip install playwright
+          python3 -m playwright install --with-deps chromium
+      - name: Check responsive PWA shell, writing and offline startup
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory /tmp/azbuka-build > /tmp/azbuka-http.log 2>&1 &
+          python3 azbuka/browser_test.py
       - uses: actions/upload-artifact@v4
         with:
           name: Azbuka_Adventure_Server_v0.7.0
