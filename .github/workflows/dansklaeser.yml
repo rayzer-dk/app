@@ -61,11 +61,15 @@ jobs:
         working-directory: dansklaeser-qa
         run: |
           if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm install --no-audit --no-fund; fi
-      - name: Unit and integrity tests
+      - name: Build Vite production bundle
         working-directory: dansklaeser-qa
-        run: |
-          npm run test:local
-          npm test
+        run: npm run build
+      - name: Native integrity checks
+        working-directory: dansklaeser-qa
+        run: npm run test:local
+      - name: Vitest unit tests
+        working-directory: dansklaeser-qa
+        run: npm test
       - name: Install Chromium, Firefox and WebKit
         working-directory: dansklaeser-qa
         run: npx playwright install --with-deps chromium firefox webkit
