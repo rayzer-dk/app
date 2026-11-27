@@ -31,11 +31,15 @@ def extract(html,spec):
     for n in root.select('script,style,sup,figure,img,form,nav,table,#headertemplate,.ws-header,.header-container,.ws-noexport,.mw-editsection,.metadata,.catlinks,.reference,.references,.reflist,.toc,.navbox,.infobox,.printfooter,.sistersitebox,.mw-empty-elt,.portal,.sisitemark,.noprint,.mw-collapsible,.ws-pagenum,.pagenum'):
         n.decompose()
     blocks=[]
-    for n in root.select('h2,h3,h4,p,div.poem,blockquote,pre'):
+    for n in root.select('h2,h3,h4,p,div,center,blockquote,pre'):
         if any(p.name in ('blockquote','pre','p') or 'poem' in (p.get('class') or []) for p in n.parents if getattr(p,'name',None)):continue
         tag='verse' if n.name=='pre' or 'poem' in (n.get('class') or []) else n.name
         text=clean(n.get_text(' ',strip=True))
         if not text:continue
+        roman=spec['id']=='n1002' and len(text)<400 and re.match(r'^[IVXLCDM]+\.\s+\S',text)
+        if n.name in ('div','center') and tag!='verse':
+            if not roman or n.select_one('p,h2,h3,h4,div,center'):continue
+        if roman:tag='h3'
         if re.match(r'^(Примечания|Примѣчанія|Примечание|Литература|Источники|Библиография)(\s|$)',text,re.I) and tag.startswith('h'):break
         if re.match(r'^(Содержание|Оглавление|Содержаніе|Оглавленіе|Эта страница|Это произведение|Источник:|Автор:|Перевод:|Текст доступен)',text,re.I):continue
         blocks.append({'tag':tag,'text':text})
@@ -53,7 +57,7 @@ def extract(html,spec):
     cyr=sum(bool(re.match(r'[А-Яа-яЁёѢѣІіѲѳѴѵ]',c)) for c in letters)
     if not letters or cyr/len(letters)<.90:raise ValueError('Non-Russian text '+spec['title'])
     if len(blocks)<10:raise ValueError('Incomplete prose '+spec['title'])
-    if spec['id'] in ('n1001','n1002') and sum(b['tag'].startswith('h') for b in blocks)<30:raise ValueError('Missing chapters '+spec['title'])
+    if spec['id'] in ('n1001','n1002') and sum(b['tag'].startswith('h') for b in blocks)<30:raise ValueError('Missing chapters '+spec['title']+'; detected '+str(sum(b['tag'].startswith('h') for b in blocks)))
     return blocks,count
 def upgrade_content(out):
     out=Path(out)
