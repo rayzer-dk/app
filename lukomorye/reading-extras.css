@@ -1,0 +1,23 @@
+
+/* 1.14: compact reading tools, daily story, optional art and local activity. */
+.daily-story{display:flex;gap:9px;align-items:center;max-width:100%;min-width:0;border:1px solid #ffffff40;background:#ffffff0b;color:inherit;border-radius:10px;padding:6px 10px;min-height:44px;text-align:left;margin-top:9px;cursor:pointer}
+.daily-story>span[data-icon]{flex:none}
+.daily-story-copy{display:grid;gap:2px;min-width:0;flex:1}
+.daily-story-copy small{font-size:10px;font-weight:600;opacity:.84}
+.daily-story-copy strong{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.daily-story:focus-visible,.auto-scroll-stop:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.reader-illustration{position:relative;overflow:hidden;border-radius:12px;max-width:420px;height:clamp(125px,34vw,220px);margin:10px auto 22px;background:#e8dec9}
+.reader-illustration .cover-art,.reader-illustration .historic-art{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.illustration-setting{display:flex;align-items:center;gap:8px;font-size:13px;min-height:36px}
+.illustration-setting input{width:18px;height:18px;accent-color:var(--forest-2)}
+.auto-scroll-stop{position:absolute;z-index:20;bottom:calc(75px + env(safe-area-inset-bottom,0px));right:12px;display:flex;gap:7px;align-items:center;padding:10px 14px;min-height:44px;border:1px solid var(--reading-border,var(--line));border-radius:24px;background:var(--reading-bg);color:var(--reading-ink);box-shadow:0 3px 16px #0002;font-weight:700;font-size:13px}
+.reader.immersive .auto-scroll-stop{bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.reading-week-setting{align-items:start}
+.reading-week{min-width:0;display:grid;gap:6px;flex:1;max-width:260px}
+.reading-week>strong{font-size:13px}
+.reading-day{display:grid;grid-template-columns:36px minmax(40px,1fr) 70px;align-items:center;gap:8px;min-height:22px;font-size:11px;color:var(--muted)}
+.reading-day span:last-child{text-align:right;white-space:nowrap}
+.reading-day-track{height:6px;border-radius:4px;background:var(--line);overflow:hidden}
+.reading-day-track i{height:100%;display:block;background:var(--forest-2);border-radius:4px}
+@media(max-width:670px){.daily-story{margin-top:6px;padding:4px 8px;min-height:40px}.daily-story-copy strong{font-size:12px}.reading-week{width:100%;max-width:none}.reader-tools-dialog .reader-timer-row{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}}
+@media(prefers-reduced-motion:reduce){.daily-story,.auto-scroll-stop{transition:none}}

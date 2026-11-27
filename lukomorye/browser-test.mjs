@@ -27,7 +27,7 @@ try{
     await ctx.addInitScript(()=>{if(!localStorage.getItem('luko-progress'))localStorage.setItem('luko-progress',JSON.stringify({b038:{done:true,percent:100,updated:12},b059:{percent:25,updated:13},b052:{percent:0,updated:14}}));});
     const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(String(e)));
     await page.goto(file?pathToFileURL(join(local,'index.html')).href:'http://127.0.0.1:'+server.address().port+'/library/');
-    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='433');
+    await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&document.querySelector('#stat-all')?.textContent==='433');
     for(const [view,count] of [['done',1],['continue',1],['offline',433],['all',433]]){
      await page.locator('#search').fill('ненайденный текст');
      await page.locator('[data-stat-view="'+view+'"]').click();
@@ -36,6 +36,7 @@ try{
     }
     assert(await page.locator('[data-icon] svg').count()>0,'Lucide icons not rendered');
     assert(await page.locator('#books .cover-art').count()>0,'Missing illustrated covers');
+    const daily=await page.locator('#daily-story').getAttribute('data-daily-id');assert(daily,'Missing daily story');
     assert.equal(await page.locator('#shelves-items [data-shelf]').count(),4);
     const shelf=page.locator('#shelves-items [data-shelf="Приключения"]');
     await shelf.scrollIntoViewIfNeeded();
@@ -58,9 +59,12 @@ try{
     await page.locator('#view-compact').click();
     assert.equal(await page.locator('#view-compact').getAttribute('aria-pressed'),'true');
     assert(await page.locator('#books').evaluate(el=>el.classList.contains('compact-mode')));
+    assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('luko-settings')||'{}').catalogLayout),'compact');
     await page.reload();
-    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='433');
-    assert.equal(await page.locator('#view-compact').getAttribute('aria-pressed'),'true');
+    await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&document.querySelector('#stat-all')?.textContent==='433');
+    await page.waitForFunction(()=>document.querySelector('#view-compact').getAttribute('aria-pressed')==='true');
+    assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('luko-settings')||'{}').catalogLayout),'compact');
+    assert.equal(await page.locator('#daily-story').getAttribute('data-daily-id'),daily);
     await page.locator('#view-grid').click();
     const favorite=page.locator('#books [data-fav]').first();
     const before=await favorite.getAttribute('aria-pressed');
@@ -116,7 +120,7 @@ try{
     await page.waitForFunction(()=>!history.state?.lukoReader);
     await page.reload();
     await page.waitForFunction(()=>JSON.parse(localStorage.getItem('luko-progress')||'{}').n1003?.bookmarks?.length===2);
-    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='433');
+    await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&document.querySelector('#stat-all')?.textContent==='433');
     await page.locator('[data-tab="Новинки"]').click();
     await page.locator('#books [data-open="n1003"]').click();
     await page.waitForSelector('#reading-text [data-para]');
@@ -144,6 +148,17 @@ try{
     await page.waitForSelector('#reading-text [data-para]');
     assert.equal(await page.locator('#reader-title').innerText(),'Маленький Мук');
     assert(await page.locator('#reading-text [data-para]').count()>35);
+    await page.locator('#save-position').click();
+    await page.locator('#reader-show-art').check();
+    assert.equal(await page.locator('#reader-illustration').isVisible(),true);
+    await page.locator('#reader-show-art').uncheck();
+    await page.locator('#auto-scroll-speed').selectOption('42');
+    await page.locator('#auto-scroll-toggle').click();
+    await page.waitForSelector('#auto-scroll-stop',{state:'visible'});
+    const startTop=await page.locator('#reader-scroll').evaluate(el=>el.scrollTop);
+    await page.waitForFunction(top=>document.querySelector('#reader-scroll').scrollTop>top+2,startTop);
+    await page.locator('#auto-scroll-stop').click();
+    await page.waitForSelector('#auto-scroll-stop',{state:'hidden'});
     await page.locator('#reader-back').click();
     await page.waitForSelector('#reader',{state:'hidden'});
     assert.deepEqual(errors,[]);
