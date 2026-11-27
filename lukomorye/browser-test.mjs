@@ -5,7 +5,7 @@ import {join,resolve,extname,sep} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import assert from 'node:assert/strict';
 const root=resolve('dist/server'),local=resolve('dist/offline');
-const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.webmanifest':'application/manifest+json','.png':'image/png','.txt':'text/plain; charset=utf-8'};
+const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.webmanifest':'application/manifest+json','.png':'image/png','.webp':'image/webp','.txt':'text/plain; charset=utf-8'};
 const server=createServer(async(req,res)=>{
  try{
   const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
@@ -36,6 +36,13 @@ try{
     }
     assert(await page.locator('[data-icon] svg').count()>0,'Lucide icons not rendered');
     assert(await page.locator('#books .cover-art').count()>0,'Missing illustrated covers');
+    assert.equal(await page.locator('#shelves-items [data-shelf]').count(),4);
+    const shelf=page.locator('#shelves-items [data-shelf="Приключения"]');
+    await shelf.scrollIntoViewIfNeeded();
+    await page.waitForFunction(()=>[...document.querySelectorAll('#shelves-items img')].every(i=>i.complete&&i.naturalWidth>0));
+    await shelf.click();
+    await page.waitForFunction(()=>document.querySelector('[data-tab="Приключения"]')?.getAttribute('aria-pressed')==='true');
+    await page.locator('[data-stat-view="all"]').click();
     if(!file){await page.screenshot({path:'dist/visual/catalog-'+width+'.png',animations:'disabled'});}
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),'Horizontal overflow '+width);
     await page.locator('#view-compact').click();

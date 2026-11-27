@@ -1,0 +1,38 @@
+[
+  {
+    "key": "vasilisa",
+    "file": "Bilibin. Baba Yaga.jpg",
+    "sha1": "cb3a407699dc63132b9e6005d7d1e69318763d2a",
+    "artist": "Иван Билибин",
+    "year": 1900,
+    "work": "Василиса Прекрасная",
+    "source": "https://commons.wikimedia.org/wiki/File:Bilibin._Baba_Yaga.jpg"
+  },
+  {
+    "key": "alice",
+    "file": "Alice-white-rabbit.jpg",
+    "sha1": "b498ec52e6008a5878a363d44aa490886c306d8d",
+    "artist": "Джон Тенниел",
+    "year": 1865,
+    "work": "Алиса в Стране чудес",
+    "source": "https://commons.wikimedia.org/wiki/File:Alice-white-rabbit.jpg"
+  },
+  {
+    "key": "snow",
+    "file": "Edmund Dulac - The Snow Queen.jpg",
+    "sha1": "db54e949dfcfe0d89b4facd7c6c72926f7204981",
+    "artist": "Эдмунд Дюлак",
+    "year": 1911,
+    "work": "Снежная королева",
+    "source": "https://commons.wikimedia.org/wiki/File:Edmund_Dulac_-_The_Snow_Queen.jpg"
+  },
+  {
+    "key": "grant",
+    "file": "'The Children of Captain Grant' by Édouard Riou 010.jpg",
+    "sha1": "e5a886126b80e79d638ebc9cd532993b3bdb0913",
+    "artist": "Эдуар Риу, гравюра Франсуа Паннемакера",
+    "year": 1868,
+    "work": "Дети капитана Гранта",
+    "source": "https://commons.wikimedia.org/wiki/File:%27The_Children_of_Captain_Grant%27_by_%C3%89douard_Riou_010.jpg"
+  }
+]
