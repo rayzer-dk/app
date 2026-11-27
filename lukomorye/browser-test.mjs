@@ -19,7 +19,7 @@ const server=createServer(async(req,res)=>{
 await new Promise(r=>server.listen(0,'127.0.0.1',r));
 const browser=await chromium.launch();
 try{
- for(const width of [390,1440]){
+ for(const width of [320,390,768,1440]){
   for(const file of [false,true]){
    const ctx=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce',isMobile:width<500,hasTouch:width<500});
    try{
@@ -34,6 +34,21 @@ try{
      assert.equal(await page.locator('#search').inputValue(),'');
     }
     assert(await page.locator('[data-icon] svg').count()>0,'Lucide icons not rendered');
+    assert(await page.locator('#books .cover-art').count()>0,'Missing illustrated covers');
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),'Horizontal overflow '+width);
+    await page.locator('#view-compact').click();
+    assert.equal(await page.locator('#view-compact').getAttribute('aria-pressed'),'true');
+    assert(await page.locator('#books').evaluate(el=>el.classList.contains('compact-mode')));
+    await page.reload();
+    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='404');
+    assert.equal(await page.locator('#view-compact').getAttribute('aria-pressed'),'true');
+    await page.locator('#view-grid').click();
+    const favorite=page.locator('#books [data-fav]').first();
+    const before=await favorite.getAttribute('aria-pressed');
+    await favorite.click();
+    assert.notEqual(await favorite.getAttribute('aria-pressed'),before);
+    await favorite.click();
+    assert.equal(await favorite.getAttribute('aria-pressed'),before);
     await page.locator('[data-stat-view="continue"]').click();
     await page.locator('#books [data-open]').first().click();
     await page.waitForSelector('#reading-text [data-para]');
@@ -50,6 +65,13 @@ try{
     await page.locator('#books [data-open]').first().click();
     await page.waitForSelector('#reading-text [data-para]');
     assert((await page.locator('#reader-title').innerText()).length);
+    await page.locator('#reader-back').click();
+    await page.waitForSelector('#reader',{state:'hidden'});
+    await page.locator('[data-stat-view="all"]').click();
+    await page.locator('#surprise-book').click();
+    await page.waitForSelector('#reading-text [data-para]');
+    await page.locator('#reader-back').click();
+    await page.waitForSelector('#reader',{state:'hidden'});
     assert.deepEqual(errors,[]);
     console.log('PASS',width,file?'file://':'PWA offline');
    }finally{await ctx.close();}
