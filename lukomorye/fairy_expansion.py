@@ -2,7 +2,7 @@
 from pathlib import Path
 import json,hashlib,re,math,time,urllib.parse,urllib.request
 from bs4 import BeautifulSoup
-from content_upgrade import fetch,words,clean,compact
+from content_upgrade import fetch,words,clean,compact,extract
 HERE=Path(__file__).resolve().parent
 AS_OF='2026-11-27T00:00:00Z'
 SPECS=json.loads((HERE/'fairy-expansion.json').read_text(encoding='utf-8'))
@@ -26,6 +26,8 @@ def key(s):
     return re.sub(r'[\W_]+','',s.casefold().replace('ё','е'))
 def choose(spec):
     author,country,suffix,edition=AUTHOR[spec['k']]
+    if spec.get('verifiedEdition'):
+        ed=spec['verifiedEdition'];blocks,count=extract(fetch({'revision':ed['revision'],'title':spec['title']}),{**spec,**ed});return ed['page'],ed['revision'],blocks,count
     titles=[spec['title']]
     aliases={'Хольгер Датчанин':['Гольгер-Данске'],'Ганс Чурбан':['Ганс Чурбан','Иванушка-дурачок'],'Что муженёк ни сделает, всё хорошо':['Уж что муженёк сделает, то и ладно'],'Снеговик':['Снегур'],'Эльф розового куста':['Эльф'],'Мотылёк':['Мотылек'],'Серебряная монетка':['Серебряная монета'],'Пятеро из одного стручка':['Пять из одного стручка'],'Рассказ Альмансора':['Жизнь Альмансора']}
     titles+=aliases.get(spec['title'],[])
@@ -99,7 +101,7 @@ def expand_fairy_library(out):
             assert spec['id'] not in index,'Duplicate ID'
             author,country,_,edition=AUTHOR[spec['k']]
             source=f'https://ru.wikisource.org/w/index.php?oldid={revision}'
-            b={k:v for k,v in spec.items() if k!='k'}
+            b={k:v for k,v in spec.items() if k not in ('k','verifiedEdition')}
             b.update(author=author,country=country,category='Сказки писателей',language='ru',revision=revision,page=page,minutes=max(1,math.ceil(count/120)),descriptionType='annotation',reference=edition+' Электронная редакция: Викитека (CC BY-SA, исходное произведение — общественное достояние).',collections=list(dict.fromkeys(['Новинки',*spec['collections']])),textRevision=1)
             doc={'id':b['id'],'page':page,'edition':b['reference'],'blocks':blocks,'words':count,'sourceUrl':source,'license':'Public domain original; Wikisource transcription CC BY-SA 4.0 where applicable'}
             path=out/'books'/f"{b['id']}.json";path.write_text(compact(doc),encoding='utf-8')

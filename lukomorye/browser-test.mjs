@@ -28,7 +28,7 @@ try{
     await ctx.addInitScript(()=>{if(!localStorage.getItem('luko-progress'))localStorage.setItem('luko-progress',JSON.stringify({b038:{done:true,percent:100,updated:12},b059:{percent:25,updated:13},b052:{percent:0,updated:14}}));});
     const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(String(e)));
     await page.goto(file?pathToFileURL(join(local,'index.html')).href:'http://127.0.0.1:'+server.address().port+'/library/');
-    await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&Number(document.querySelector('#stat-all')?.textContent)>=453);
+    await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&Number(document.querySelector('#stat-all')?.textContent)>=456);
     for(const [view,count] of [['done',1],['continue',1],['offline',count],['all',count]]){
      await page.locator('#search').fill('ненайденный текст');
      await page.locator('[data-stat-view="'+view+'"]').click();
@@ -63,7 +63,7 @@ try{
     assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('luko-settings')||'{}').catalogLayout),'compact');
     if(file)await page.evaluate(()=>{localStorage.removeItem('luko-settings');localStorage.removeItem('luko-mirror:luko-settings');});
     await page.reload();
-    await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&Number(document.querySelector('#stat-all')?.textContent)>=453);
+    await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&Number(document.querySelector('#stat-all')?.textContent)>=456);
     await page.waitForFunction(()=>document.querySelector('#view-compact').getAttribute('aria-pressed')==='true');
     assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('luko-settings')||'{}').catalogLayout),'compact');
     assert.equal(await page.locator('#daily-story').getAttribute('data-daily-id'),daily);
@@ -83,7 +83,7 @@ try{
     if(!file){
      await page.waitForFunction(()=>navigator.serviceWorker.controller!==null,{},{timeout:180000});
      await ctx.setOffline(true);await page.reload();
-     await page.waitForFunction(()=>Number(document.querySelector('#stat-all').textContent)>=453);
+     await page.waitForFunction(()=>Number(document.querySelector('#stat-all').textContent)>=456);
     }
     await page.locator('[data-stat-view="all"]').click();
     await page.locator('#search').fill('Сивка-бурка');
@@ -123,7 +123,7 @@ try{
     if(file)await page.evaluate(()=>{localStorage.removeItem('luko-progress');localStorage.removeItem('luko-mirror:luko-progress');});
     await page.reload();
     await page.waitForFunction(()=>JSON.parse(localStorage.getItem('luko-progress')||'{}').n1003?.bookmarks?.length===2);
-    await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&Number(document.querySelector('#stat-all')?.textContent)>=453);
+    await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&Number(document.querySelector('#stat-all')?.textContent)>=456);
     await page.locator('[data-tab="Новинки"]').click();
     await page.locator('#books [data-open="n1003"]').click();
     await page.waitForSelector('#reading-text [data-para]');
