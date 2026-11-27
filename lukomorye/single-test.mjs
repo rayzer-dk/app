@@ -1,7 +1,7 @@
 import {chromium} from 'playwright';
 import {readFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
-const html=await readFile('dist/Lukomorye_v1.16.2.html','utf8');
+const html=await readFile('dist/Lukomorye_v1.16.3.html','utf8');
 const browser=await chromium.launch();
 try{
  for(const width of [320,390,1440]){

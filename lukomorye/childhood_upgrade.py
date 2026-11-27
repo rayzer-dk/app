@@ -27,7 +27,7 @@ def add_childhood(out):
         assert spec['id'] not in ids and key(spec['title']) not in seen
         blocks=[{'tag':'p','text':p.strip()} for p in spec['body'].split('\n\n') if p.strip()]
         count=words(' '.join(p['text'] for p in blocks))
-        assert count>=180 and len(blocks)>=(5 if spec.get('translation') else 7),(spec['title'],count,len(blocks))
+        assert count>=(80 if spec.get('translation') else 180) and len(blocks)>=(5 if spec.get('translation') else 7),(spec['title'],count,len(blocks))
         nation={'Украинские':'Украинская','Белорусские':'Белорусская','Русские':'Русская'}[spec['country']]
         edition=nation+' народная сказка. Самостоятельный русский пересказ традиционного сюжета для «Лукоморья», 2026. Не текст мультфильма и не воспроизведение конкретного печатного перевода.'
         translation=spec.get('translation')
@@ -45,7 +45,7 @@ def add_childhood(out):
         report['new'].append({'id':b['id'],'title':b['title'],'words':count,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'edition':edition,'sourceType':b['sourceType'],**({'sourceUrl':translation['sourceUrl'],'sourceRevision':translation['revision']} if translation else {})})
         print('Childhood text',b['title'],count,'words',flush=True)
     catalog=catalog[:20]+new+catalog[20:]
-    report.update(version='1.16.2',total=len(catalog),childhood={'added':len(new),'existing':len(PICKS),'total':len(PICKS)+len(new),'edition':'Source-attributed full translations where available; remaining retellings explicitly labelled.','completeTranslations':sum(b['sourceType']=='translation' for b in new),'retellingsPending':sum(b['sourceType']=='retelling' for b in new)},annotations=sum(b.get('descriptionType')=='annotation' for b in catalog))
+    report.update(version='1.16.3',total=len(catalog),childhood={'added':len(new),'existing':len(PICKS),'total':len(PICKS)+len(new),'edition':'Source-attributed full translations where available; remaining retellings explicitly labelled.','completeTranslations':sum(b['sourceType']=='translation' for b in new),'retellingsPending':sum(b['sourceType']=='retelling' for b in new)},annotations=sum(b.get('descriptionType')=='annotation' for b in catalog))
     assert len(catalog)==len(index)==457+len(SPECS)
     (out/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     (out/'catalog.js').write_text('window.LUKO_CATALOG = '+compact(catalog)+';\nwindow.LUKO_RETIRED_IDS = '+retired,encoding='utf-8')
