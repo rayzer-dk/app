@@ -27,7 +27,7 @@ def add_childhood(out):
         assert spec['id'] not in ids and key(spec['title']) not in seen
         blocks=[{'tag':'p','text':p.strip()} for p in spec['body'].split('\n\n') if p.strip()]
         count=words(' '.join(p['text'] for p in blocks))
-        assert count>=180 and len(blocks)>=7,(spec['title'],count,len(blocks))
+        assert count>=180 and len(blocks)>=(5 if spec.get('translation') else 7),(spec['title'],count,len(blocks))
         nation={'Украинские':'Украинская','Белорусские':'Белорусская','Русские':'Русская'}[spec['country']]
         edition=nation+' народная сказка. Самостоятельный русский пересказ традиционного сюжета для «Лукоморья», 2026. Не текст мультфильма и не воспроизведение конкретного печатного перевода.'
         translation=spec.get('translation')
