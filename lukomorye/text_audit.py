@@ -16,10 +16,12 @@ def audit_texts(out):
         flags=[]
         if not source:flags.append('source_missing')
         if count<350:flags.append('short_review_not_proof_of_abridgement')
+        if count<=600:flags.append('priority_source_comparison')
+        if b['id']=='b034':status='source_text_matched_manual';source='https://ru.wikisource.org/w/index.php?oldid=5832700'
         if re.search(r'\b(сокращ[её]нный текст|продолжение следует|текст отсутствует|текст неполный|отрывок из|пока не вычитан)\b',text,re.I):flags.append('possible_fragment')
         assert d['id']==b['id'] and text.strip() and b['language']=='ru'
         rows.append({'id':b['id'],'title':b['title'],'wordCount':count,'source':source,'edition':d.get('edition',''),'status':status,'flags':flags,'sha256':hashlib.sha256((out/'books'/f"{b['id']}.json").read_bytes()).hexdigest()})
     duplicate=[v for v in hashes.values() if len(v)>1]
     assert not duplicate
-    result={'total':len(rows),'structuralAudit':'all texts inspected for presence, declared language, exact normalized duplicates, source, short length and fragment markers; not independent line-by-line collation','fullTranslations':sum(r['status']=='translated_from_source' for r in rows),'retellingsPending':sum(r['status']=='retelling_needs_replacement' for r in rows),'exactDuplicates':duplicate,'shortTexts':sum('short_review_not_proof_of_abridgement' in r['flags'] for r in rows),'books':rows}
+    result={'total':len(rows),'structuralAudit':'all texts inspected for presence, declared language, exact normalized duplicates, source, short length and fragment markers; not independent line-by-line collation','fullTranslations':sum(r['status']=='translated_from_source' for r in rows),'retellingsPending':sum(r['status']=='retelling_needs_replacement' for r in rows),'exactDuplicates':duplicate,'priorityShortTexts':sum('priority_source_comparison' in r['flags'] for r in rows),'shortTexts':sum('short_review_not_proof_of_abridgement' in r['flags'] for r in rows),'books':rows}
     (out/'TEXT_AUDIT.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
