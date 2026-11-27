@@ -29,10 +29,10 @@ try{
     const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(String(e)));
     await page.goto(file?pathToFileURL(join(local,'index.html')).href:'http://127.0.0.1:'+server.address().port+'/library/');
     await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&Number(document.querySelector('#stat-all')?.textContent)>=456);
-    for(const [view,count] of [['done',1],['continue',1],['offline',count],['all',count]]){
+    for(const [view,expectedCount] of [['done',1],['continue',1],['offline',count],['all',count]]){
      await page.locator('#search').fill('ненайденный текст');
      await page.locator('[data-stat-view="'+view+'"]').click();
-     await page.waitForFunction(n=>document.querySelector('#result-count').textContent.startsWith(n+' '),count);
+     await page.waitForFunction(n=>document.querySelector('#result-count').textContent.startsWith(n+' '),expectedCount);
      assert.equal(await page.locator('#search').inputValue(),'');
     }
     assert(await page.locator('[data-icon] svg').count()>0,'Lucide icons not rendered');
