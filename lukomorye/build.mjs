@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 const root=fileURLToPath(new URL('.',import.meta.url));
 const source=join(root,'src'), dist=join(root,'dist'), server=join(dist,'server'), local=join(dist,'offline');
 const version=JSON.parse(read(join(source,'version.json'),'utf8')).version;
-assert.equal(version,'1.16.0');
+assert.equal(version,'1.16.1');
 const bookCount=JSON.parse(read(join(source,'catalog.json'),'utf8')).length;assert.equal(bookCount,474);
 const svgNames='book home heart settings search chevron-right chevron play pause stop volume edit bookmark plus check trash download upload sun moon x external copy info menu library layers clock book-open book-text globe feather compass check-circle panel-left list arrow-left arrow-right arrow-up-right type maximize sparkles check-check sliders bookmark-check share refresh minimize help-circle'.split(' ');
 const aliases={home:['house','home'],chevron:['chevron-left'],stop:['square'],volume:['volume-2'],edit:['pencil'],trash:['trash-2'],external:['external-link'],'check-circle':['circle-check','check-circle'],sliders:['sliders-horizontal'],refresh:['refresh-cw'],'help-circle':['circle-question-mark','circle-help','help-circle']};
@@ -36,7 +36,7 @@ await build({...common,build:{...options,outDir:server,emptyOutDir:false,rollupO
 await build({...common,build:{...options,outDir:local,emptyOutDir:false,lib:{entry:appPath,name:'LukomoryeApp',formats:['iife'],fileName:()=> 'app.js'}}});
 assert(existsSync(join(local,'app.js')),'Missing classic script bundle');
 for(const dest of [server,local]){
- for(const file of ['icons','art','catalog.json','CATALOG_REVIEW.json','CONTENT_REVIEW.json','README.txt','version.json']) cpSync(join(source,file),join(dest,file),{recursive:true});
+ for(const file of ['icons','art','catalog.json','CATALOG_REVIEW.json','CONTENT_REVIEW.json','TEXT_AUDIT.json','README.txt','version.json']) cpSync(join(source,file),join(dest,file),{recursive:true});
  const licenses=join(dest,'licenses');mkdirSync(licenses,{recursive:true});
  for(const name of ['lucide-static','workbox-routing','workbox-core']){
   const dir=join(root,'node_modules',name);
