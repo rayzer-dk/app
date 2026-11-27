@@ -16,7 +16,7 @@ def fetch(spec):
     url='https://ru.wikisource.org/w/api.php?'+args
     for i in range(3):
         try:
-            request=urllib.request.Request(url,headers={'User-Agent':'LukomoryeLibrary/1.10 (https://github.com/rayzer-dk/app; public-domain offline reader)','Accept':'application/json'})
+            request=urllib.request.Request(url,headers={'User-Agent':'LukomoryeLibrary/1.12 (https://github.com/rayzer-dk/app; public-domain offline reader)','Accept':'application/json'})
             with urllib.request.urlopen(request,timeout=35) as response:
                 data=json.loads(response.read(15*1024*1024))
             parsed=data['parse']
@@ -56,6 +56,7 @@ def extract(html,spec):
     letters=re.findall(r'[^\W\d_]',text)
     cyr=sum(bool(re.match(r'[А-Яа-яЁёѢѣІіѲѳѴѵ]',c)) for c in letters)
     if not letters or cyr/len(letters)<.90:raise ValueError('Non-Russian text '+spec['title'])
+    if spec['id']=='n1201' and sum(b['tag'].startswith('h') and re.match(r'^Глава\s+[IVXLCDM]+',b['text'],re.I) is not None for b in blocks)<60:raise ValueError('Incomplete chapters in Captain Grant')
     if len(blocks)<10:raise ValueError('Incomplete prose '+spec['title'])
     if spec['id'] in ('n1001','n1002') and sum(b['tag'].startswith('h') for b in blocks)<30:raise ValueError('Missing chapters '+spec['title']+'; detected '+str(sum(b['tag'].startswith('h') for b in blocks)))
     return blocks,count
@@ -106,7 +107,7 @@ def upgrade_content(out):
     (out/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     (out/'catalog.js').write_text('window.LUKO_CATALOG = '+compact(catalog)+';\nwindow.LUKO_RETIRED_IDS = '+retired,encoding='utf-8')
     (out/'book-index.js').write_text('window.LUKO_BOOK_INDEX='+compact(index)+';\n',encoding='utf-8')
-    (out/'CONTENT_REVIEW.json').write_text(json.dumps({'version':'1.10.0','total':TOTAL,'new':report,**counts},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    (out/'CONTENT_REVIEW.json').write_text(json.dumps({'version':'1.12.0','total':TOTAL,'new':report,**counts},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     p=out/'app.js';s=p.read_text(encoding='utf-8')
     old="const categories=['Русские народные','Сказки писателей','Приключения','Детские рассказы','Поучительные сказки','Сказки мира','Мои книги'];"
     new="const categories=['Лучшее','Новинки','Русские народные','Сказки писателей','Приключения','Детские рассказы','О животных','Волшебные сказки','Путешествия','Познавательное','Перед сном','Смешное','Поучительные сказки','Сказки мира','Мои книги'];\nObject.assign(categoryIcon,{'Лучшее':'sparkles','Новинки':'bookmark-check','О животных':'heart','Волшебные сказки':'sparkles','Путешествия':'compass','Познавательное':'book-text','Перед сном':'moon','Смешное':'book-open'});"
