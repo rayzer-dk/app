@@ -1,0 +1,32 @@
+name: Lukomorye source-by-source text audit
+on:
+  push:
+    paths:
+      - 'tools/lukomorye-source-audit.py'
+      - '.github/workflows/lukomorye-source-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: Lukomorye-v1.16.3
+          run-id: 46062535096
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: audit-input
+      - name: Install HTML parser
+        run: python3 -m pip install beautifulsoup4==4.14.3 --break-system-packages
+      - name: Compare source texts, shortest first
+        run: python3 tools/lukomorye-source-audit.py "$(find audit-input -name 'Lukomorye_Server_v1.16.3.zip' -print -quit)" audit-output
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Lukomorye-source-collation-1.16.3
+          path: audit-output/
+          if-no-files-found: warn
