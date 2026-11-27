@@ -1,0 +1,97 @@
+name: DanskLaeser visual browser QA
+on:
+  push:
+    paths:
+      - 'dansklaeser/**'
+      - 'DanskLaeser_Source_v*.zip'
+  pull_request:
+    paths:
+      - 'dansklaeser/**'
+      - 'DanskLaeser_Source_v*.zip'
+  workflow_dispatch:
+    inputs:
+      require_baselines:
+        description: 'Require approved screenshot references'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: dansklaeser-qa-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  browser-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      VISUAL_REQUIRE_BASELINE: ${{ inputs.require_baselines && '1' || '0' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: https://registry.npmjs.org
+      - name: Restore source project
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f dansklaeser/package.json ]]; then
+            cp -a dansklaeser dansklaeser-qa
+          else
+            archive=$(find . -maxdepth 1 -name 'DanskLaeser_Source_v*.zip' -print | sort -V | tail -n 1)
+            if [[ -z "$archive" ]]; then
+              echo "::error::Upload a DanskLaeser_Source_v*.zip source archive (not the server ZIP)."
+              exit 1
+            fi
+            python3 - "$archive" <<'PY'
+          import sys, zipfile, pathlib
+          dest = pathlib.Path("dansklaeser-qa").resolve()
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              for name in z.namelist():
+                  if not (dest / name).resolve().is_relative_to(dest):
+                      raise ValueError("Unsafe ZIP member")
+              z.extractall(dest)
+          PY
+          fi
+          test -f dansklaeser-qa/package.json
+          test -f dansklaeser-qa/playwright.config.mjs
+          test -f dansklaeser-qa/e2e/visual.spec.mjs
+          node -p "require('./dansklaeser-qa/package.json').version"
+      - name: Install dependencies
+        working-directory: dansklaeser-qa
+        run: |
+          if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm install --no-audit --no-fund; fi
+      - name: Unit and integrity tests
+        working-directory: dansklaeser-qa
+        run: |
+          npm run test:local
+          npm test
+      - name: Install Chromium, Firefox and WebKit
+        working-directory: dansklaeser-qa
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Browser and screenshot checks
+        working-directory: dansklaeser-qa
+        run: npm run test:e2e
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dansklaeser-browser-qa
+          path: |
+            dansklaeser-qa/playwright-report/
+            dansklaeser-qa/test-results/
+            dansklaeser-qa/package-lock.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Package tested Vite build
+        if: success()
+        working-directory: dansklaeser-qa
+        run: |
+          version=$(node -p "require('./package.json').version")
+          (cd dist && zip -qr "../DanskLaeser_Server_v${version}.zip" .)
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: dansklaeser-tested-build
+          path: dansklaeser-qa/DanskLaeser_Server_v*.zip
+          if-no-files-found: error
