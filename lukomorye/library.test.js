@@ -23,7 +23,7 @@ test('all precached files are present and their final bytes match SHA-256',()=>{
  for(const [name,digest] of Object.entries(hashes))expect('sha256-'+createHash('sha256').update(read(join(server,name))).digest('base64')).toBe(digest);
  expect(read(join(server,'offline-shell.txt'),'utf8')).toBe(read(join(server,'index.html'),'utf8'));
  expect(existsSync(join(server,'sw.js'))).toBe(true);
- expect(json(join(server,'version.json')).version).toBe('1.12.1');
+ expect(json(join(server,'version.json')).version).toBe('1.12.2');
  expect(read(join(local,'index.html'),'utf8')).not.toContain('type="module"');
 });
 
@@ -47,7 +47,7 @@ test('curated collections, new books and verified editions',()=>{
 
 test('historical artwork is local, attributed and identical in both distributions',()=>{
  const credits=json(join(server,'art/credits.json'));
- expect(credits).toHaveLength(4);
+ expect(credits).toHaveLength(8);
  for(const art of credits){
   expect(art.license).toBe('Public domain');
   const data=read(join(server,art.path));

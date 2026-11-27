@@ -45,6 +45,16 @@ try{
     await page.locator('[data-stat-view="all"]').click();
     if(!file){await page.screenshot({path:'dist/visual/catalog-'+width+'.png',animations:'disabled'});}
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),'Horizontal overflow '+width);
+    if(width<=670){
+     const toggle=page.locator('#mobile-filter-toggle');
+     assert.equal(await toggle.getAttribute('aria-expanded'),'false');
+     assert.equal(await page.locator('#age-filter').isVisible(),false);
+     await toggle.click();assert.equal(await page.locator('#age-filter').isVisible(),true);
+     await page.locator('#age-filter').selectOption('10-plus');
+     assert((await toggle.innerText()).includes('(1)'));
+     await page.locator('#age-filter').selectOption('all');
+     await toggle.click();assert.equal(await page.locator('#age-filter').isVisible(),false);
+    }
     await page.locator('#view-compact').click();
     assert.equal(await page.locator('#view-compact').getAttribute('aria-pressed'),'true');
     assert(await page.locator('#books').evaluate(el=>el.classList.contains('compact-mode')));

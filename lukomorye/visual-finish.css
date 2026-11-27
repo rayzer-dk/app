@@ -1,5 +1,5 @@
 
-/* 1.12.1: bookish finishing, clear focus and stable mobile geometry */
+/* 1.12.2: bookish finishing, clear focus and stable mobile geometry */
 .book-card .card-top{overflow:hidden}
 .book-card .card-top .cover-art{filter:saturate(.96)}
 .book-card .card-top:after{display:block;content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(90deg,#0003 0,transparent 8%,transparent 94%,#0002 100%)}
@@ -34,3 +34,41 @@
 .shelf-card:focus-visible{outline:2px solid var(--forest-2);outline-offset:2px}
 @media(hover:hover) and (prefers-reduced-motion:no-preference){.shelf-card{transition:border-color .18s,transform .18s}.shelf-card:hover{border-color:var(--forest-2)}body[data-animations=on] .shelf-card:hover{transform:translateY(-2px)}}
 @container library (max-width:800px){.shelves-items{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.shelf-card{grid-template-columns:52px minmax(0,1fr);min-height:63px}.shelf-art{min-height:63px}.shelf-copy{padding:6px}.shelf-copy strong{font-size:12px}.shelf-copy small{font-size:10px}}
+
+/* 1.12.2: compact catalogue after reviewing real 390px and 1440px captures. */
+.mobile-filter-toggle{display:none;align-items:center;justify-content:center;gap:5px;min-height:44px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--ink);font-size:12px;font-weight:700;padding:0 10px;white-space:nowrap}
+.mobile-filter-toggle svg{width:17px;height:17px}
+.mobile-filter-toggle.has-active-filters{background:var(--mint);color:var(--forest-2)}
+.catalog-heading{margin-bottom:9px}
+.filter-pills:empty{display:none}
+.view-switch button[aria-pressed=false]{background:transparent;color:var(--muted)}
+.view-switch button[aria-pressed=true]{background:var(--mint);color:var(--forest-2)}
+.book-card .card-top:after{width:auto;height:auto;inset:0;border:0;border-radius:0;z-index:0}
+.book-card .card-top .historic-art{z-index:0;background:#e8dec9}
+.card-title{min-height:2.46em}
+.offline-quick.all-saved{display:flex;align-items:center;justify-content:space-between;flex-direction:row;gap:9px;padding:8px 11px;margin-bottom:10px;box-shadow:none}
+.offline-quick.all-saved .offline-quick-info{gap:8px}
+.offline-quick.all-saved .offline-quick-icon{width:28px;height:28px;border-radius:7px}
+.offline-quick.all-saved .offline-quick-icon svg{width:16px;height:16px}
+.offline-quick.all-saved .offline-quick-info strong{font-size:12px}
+.offline-quick.all-saved .offline-quick-info small{font-size:10px;line-height:1.25;margin-top:2px}
+.offline-quick.all-saved .offline-quick-actions{display:none}
+@media(max-width:670px){
+ .catalog-section .filters{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;margin-bottom:8px}
+ .catalog-section .filters .searchbox{grid-column:1;min-width:0;padding:0 8px;gap:5px}
+ .catalog-section .searchbox input{font-size:14px}
+ .catalog-section .mobile-filter-toggle{display:flex;grid-column:2;grid-row:1}
+ .catalog-section .filters:not(.filters-expanded)>select{display:none}
+ .catalog-section .filters.filters-expanded>select{grid-column:1/-1}
+ .catalog-section .filters.filters-expanded>#time-filter,.catalog-section .filters.filters-expanded>#age-filter{grid-column:1/-1}
+ .shelves-heading{margin-bottom:6px}
+ .illustrated-shelves{margin:6px 0 9px}
+ .shelf-card{min-height:56px}
+ .shelf-art{min-height:56px}
+ .catalog-tools{margin:6px 0 8px}
+ .offline-quick.all-saved .offline-quick-info small{display:none}
+ .offline-quick.all-saved .offline-quick-icon{width:24px;height:24px}
+ .offline-quick.all-saved{padding:6px 9px}
+ .book-card .card-title{min-height:0}
+}
+@media(max-width:360px){.mobile-filter-toggle{padding-inline:7px;font-size:11px}.catalog-section .searchbox input{font-size:12px}}

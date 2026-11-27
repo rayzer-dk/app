@@ -12,7 +12,7 @@ def prepare_art(out):
         url='https://upload.wikimedia.org/wikipedia/commons/'+md5[0]+'/'+md5[:2]+'/'+urllib.parse.quote(name)
         for attempt in range(3):
             try:
-                req=urllib.request.Request(url,headers={'User-Agent':'LukomoryeLibrary/1.12.1 (https://github.com/rayzer-dk/app; public-domain illustrations)'})
+                req=urllib.request.Request(url,headers={'User-Agent':'LukomoryeLibrary/1.12.2 (https://github.com/rayzer-dk/app; public-domain illustrations)'})
                 with urllib.request.urlopen(req,timeout=35) as response: raw=response.read(5*1024*1024)
                 assert hashlib.sha1(raw).hexdigest()==item['sha1'],'Source image changed: '+name
                 break

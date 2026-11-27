@@ -34,5 +34,41 @@
     "year": 1868,
     "work": "Дети капитана Гранта",
     "source": "https://commons.wikimedia.org/wiki/File:%27The_Children_of_Captain_Grant%27_by_%C3%89douard_Riou_010.jpg"
+  },
+  {
+    "key": "frog",
+    "file": "Ivan Bilibin 054 full.jpeg",
+    "sha1": "97811710e49993ced59639987c2c50f9372b6e33",
+    "artist": "Иван Билибин",
+    "year": 1899,
+    "work": "Царевна-лягушка",
+    "source": "https://commons.wikimedia.org/wiki/File:Ivan_Bilibin_054_full.jpeg"
+  },
+  {
+    "key": "firebird",
+    "file": "Firebird.jpg",
+    "sha1": "e95f4f44eedee589a12951dbd5b35933c8311f5f",
+    "artist": "Иван Билибин",
+    "year": 1899,
+    "work": "Сказка об Иване-царевиче, жар-птице и о сером волке",
+    "source": "https://commons.wikimedia.org/wiki/File:Firebird.jpg"
+  },
+  {
+    "key": "saltan",
+    "file": "Ivanbilibin.jpg",
+    "sha1": "8f1b608948be55169f3d1da7abce8c5420102a19",
+    "artist": "Иван Билибин",
+    "year": 1905,
+    "work": "Сказка о царе Салтане",
+    "source": "https://commons.wikimedia.org/wiki/File:Ivanbilibin.jpg"
+  },
+  {
+    "key": "koschei",
+    "file": "Viktor Vasnetsov Kashchey the Immortal.jpg",
+    "sha1": "50f69e3f8fc8ddc638013f1f0b3ebc2ce404253a",
+    "artist": "Виктор Васнецов",
+    "year": 1926,
+    "work": "Кощей Бессмертный",
+    "source": "https://commons.wikimedia.org/wiki/File:Viktor_Vasnetsov_Kashchey_the_Immortal.jpg"
   }
 ]
