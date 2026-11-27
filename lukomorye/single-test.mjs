@@ -1,7 +1,7 @@
 import {chromium} from 'playwright';
 import {readFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
-const html=await readFile('dist/Lukomorye_v1.16.5.html','utf8');
+const html=await readFile('dist/Lukomorye_v1.16.6.html','utf8');
 const browser=await chromium.launch();
 try{
  for(const width of [320,390,1440]){
@@ -13,7 +13,7 @@ try{
   await page.setContent(html,{waitUntil:'domcontentloaded',timeout:60000});
   await context.setOffline(true);
   await page.waitForFunction(()=>document.body.dataset.libraryReady==='true');
-  assert.equal(await page.locator('#stat-all').innerText(),'475');
+  assert.equal(await page.locator('#stat-all').innerText(),'478');
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
   assert(await page.locator('img').first().evaluate(i=>i.complete&&i.naturalWidth>0));
   await page.locator('#search').fill('Коза-дереза');

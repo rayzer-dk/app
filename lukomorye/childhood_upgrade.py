@@ -16,6 +16,7 @@ def add_childhood(out):
     ids={b['id'] for b in catalog}
     assert set(PICKS)<=ids
     extra_aliases={'af031':['Жихарка','Жихарь'],'b018':['Вершки и корешки','Мужик и медведь'],'b006':['Заюшкина избушка','Лубяная и ледяная избушки'],'b104':['Золотая рыбка Пушкина'],'b007':['Котик и петушок','Котик и петушок и лисичка'],'b058':['Иван-царевич и Серый волк'],'b028':['Теремок (вариант Терем мухи)']}
+    extra_aliases.update({'af103':['Илья Муромец и Соловей-разбойник','Илья Муромец','Соловей-разбойник'],'af104':['Илья Муромец и Змей','Илья Муромец'],'b062':['Василиса Премудрая'],'b151':['Конек-горбунок','Конёк горбунок'],'f201':['Змей Горыныч','Добрыня Никитич'],'af134':['Иванушка дурачок','Иван-дурачок']})
     for b in catalog:
         if b['id']=='b034':
             b.update(revision=5832700,description='Полный вариант № 148 собрания Афанасьева: Никита спасает царевну, побеждает змея и проводит борозду до моря. Есть также более подробный украинский вариант «Кирилл Кожемяка».',reference=b['reference']+'; № 148, запись П. И. Якушкина. Сверен с редакцией Викитеки 5832700.')
@@ -47,7 +48,7 @@ def add_childhood(out):
         report['new'].append({'id':b['id'],'title':b['title'],'words':count,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'edition':edition,'sourceType':b['sourceType'],**({'sourceUrl':translation['sourceUrl'],'sourceRevision':translation['revision']} if translation else {})})
         print('Childhood text',b['title'],count,'words',flush=True)
     catalog=catalog[:20]+new+catalog[20:]
-    report.update(version='1.16.5',total=len(catalog),childhood={'added':len(new),'existing':len(PICKS),'total':len(PICKS)+len(new),'edition':'Source-attributed full translations where available; remaining retellings explicitly labelled.','completeTranslations':sum(b['sourceType']=='translation' for b in new),'retellingsPending':sum(b['sourceType']=='retelling' for b in new)},annotations=sum(b.get('descriptionType')=='annotation' for b in catalog))
+    report.update(version='1.16.6',total=len(catalog),childhood={'added':len(new),'existing':len(PICKS),'total':len(PICKS)+len(new),'edition':'Source-attributed full translations where available; remaining retellings explicitly labelled.','completeTranslations':sum(b['sourceType']=='translation' for b in new),'retellingsPending':sum(b['sourceType']=='retelling' for b in new)},annotations=sum(b.get('descriptionType')=='annotation' for b in catalog))
     assert len(catalog)==len(index)==457+len(SPECS)
     (out/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     (out/'catalog.js').write_text('window.LUKO_CATALOG = '+compact(catalog)+';\nwindow.LUKO_RETIRED_IDS = '+retired,encoding='utf-8')
