@@ -37,14 +37,19 @@ jobs:
         run: npm run test:browser
       - name: Create archives
         run: |
-          python3 -c "import shutil; shutil.make_archive('dist/Lukomorye_Server_v1.16.1','zip','dist/server'); shutil.make_archive('dist/Lukomorye_Autonomous_v1.16.1','zip','dist/offline')"
+          python3 -c "import shutil; shutil.make_archive('dist/Lukomorye_Server_v1.16.2','zip','dist/server'); shutil.make_archive('dist/Lukomorye_Autonomous_v1.16.2','zip','dist/offline')"
+      - name: Build self-contained Android HTML
+        run: python3 single_html.py dist/Lukomorye_Autonomous_v1.16.2.zip dist/Lukomorye_v1.16.2.html
+      - name: Test self-contained offline HTML
+        run: node single-test.mjs
       - uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: Lukomorye-v1.16.1
+          name: Lukomorye-v1.16.2
           path: |
-            lukomorye/dist/Lukomorye_Server_v1.16.1.zip
-            lukomorye/dist/Lukomorye_Autonomous_v1.16.1.zip
+            lukomorye/dist/Lukomorye_Server_v1.16.2.zip
+            lukomorye/dist/Lukomorye_Autonomous_v1.16.2.zip
+            lukomorye/dist/Lukomorye_v1.16.2.html
             lukomorye/dist/integrity.json
             lukomorye/package-lock.json
             lukomorye/dist/visual/*.png
