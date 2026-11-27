@@ -17,7 +17,7 @@ def add_shelves(out):
  const show=view==='all'&&!hasFilters();
  section.classList.toggle('hidden',!show);
  if(!show)return;
- const groups=[['Русские народные','Василиса Прекрасная'],['Приключения','Дети капитана Гранта'],['Сказки мира','Алиса в Стране чудес'],['Волшебные сказки','Снежная королева']];
+ const groups=[['Сказки из нашего детства','Василиса Прекрасная'],['Приключения','Дети капитана Гранта'],['Сказки мира','Алиса в Стране чудес'],['Волшебные сказки','Снежная королева']];
  const items=$('#shelves-items');
  items.innerHTML=groups.map(([category,title])=>'<button type="button" class="shelf-card" data-shelf="'+esc(category)+'"><span class="shelf-art">'+coverArt({id:'shelf-'+category,title,category})+'</span><span class="shelf-copy"><strong>'+esc(category)+'</strong><small>'+esc(workCount(books.filter(b=>inCollection(b,category)).length))+'</small></span></button>').join('');
 }
