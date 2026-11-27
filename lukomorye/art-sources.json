@@ -70,5 +70,29 @@
     "year": 1926,
     "work": "Кощей Бессмертный",
     "source": "https://commons.wikimedia.org/wiki/File:Viktor_Vasnetsov_Kashchey_the_Immortal.jpg"
+  },
+  {
+    "key": "tinder",
+    "file": "Tinder Box 01.jpg",
+    "artist": "Вильгельм Педерсен",
+    "year": 1850,
+    "work": "Огниво",
+    "source": "https://commons.wikimedia.org/wiki/File:Tinder_Box_01.jpg"
+  },
+  {
+    "key": "nightingale",
+    "file": "Nightingale 02.jpg",
+    "artist": "Вильгельм Педерсен",
+    "year": 1850,
+    "work": "Соловей",
+    "source": "https://commons.wikimedia.org/wiki/File:Nightingale_02.jpg"
+  },
+  {
+    "key": "tin",
+    "file": "Vilhelm Pedersen, DK2-0006, ubt.jpeg",
+    "artist": "Вильгельм Педерсен",
+    "year": 1850,
+    "work": "Стойкий оловянный солдатик",
+    "source": "https://commons.wikimedia.org/wiki/File:Vilhelm_Pedersen,_DK2-0006,_ubt.jpeg"
   }
 ]

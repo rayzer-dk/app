@@ -8,6 +8,14 @@ def prepare_art(out):
     manifest=[]
     for item in SPECS:
         name=item['file'].replace(' ','_')
+        if not item.get('sha1'):
+            query=urllib.parse.urlencode({'action':'query','titles':'File:'+name,'prop':'imageinfo','iiprop':'url|sha1|extmetadata','format':'json','formatversion':2})
+            request=urllib.request.Request('https://commons.wikimedia.org/w/api.php?'+query,headers={'User-Agent':'LukomoryeLibrary/1.15 (https://github.com/rayzer-dk/app; historic illustration importer)'})
+            with urllib.request.urlopen(request,timeout=30) as res: data=json.loads(res.read(2*1024*1024))
+            info=data['query']['pages'][0]['imageinfo'][0]
+            license=info['extmetadata'].get('LicenseShortName',{}).get('value','').lower()
+            assert 'public domain' in license or license.startswith('pd'),'Not public domain: '+name
+            sha=info['sha1'];item['sha1']=sha if len(sha)==40 else format(int(sha,36),'040x')
         md5=hashlib.md5(name.encode()).hexdigest()
         url='https://upload.wikimedia.org/wikipedia/commons/'+md5[0]+'/'+md5[:2]+'/'+urllib.parse.quote(name)
         for attempt in range(3):

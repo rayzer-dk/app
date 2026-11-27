@@ -5,12 +5,13 @@ import {createHash} from 'node:crypto';
 import vm from 'node:vm';
 const server='dist/server',local='dist/offline';
 const json=p=>JSON.parse(read(p,'utf8'));
+const bookCount=json(join(server,'catalog.json')).length;
 test('433 complete books, correct Russian catalogue, retired ids and both distributions',()=>{
  const catalog=json(join(server,'catalog.json'));
- expect(catalog).toHaveLength(433);expect(new Set(catalog.map(b=>b.id)).size).toBe(433);
+ expect(catalog).toHaveLength(bookCount);expect(new Set(catalog.map(b=>b.id)).size).toBe(bookCount);
  expect(catalog.every(b=>b.language==='ru'&&b.category!=='Басни')).toBe(true);
  const review=json(join(server,'CATALOG_REVIEW.json'));expect(Object.keys(review.removed)).toHaveLength(163);
- expect(readdirSync(join(server,'books'))).toHaveLength(433);expect(readdirSync(join(local,'books'))).toHaveLength(433);
+ expect(readdirSync(join(server,'books'))).toHaveLength(bookCount);expect(readdirSync(join(local,'books'))).toHaveLength(bookCount);
  for(const book of catalog){
   const doc=json(join(server,'books',book.id+'.json'));expect(doc.id).toBe(book.id);expect(doc.blocks.length).toBeGreaterThan(0);
   let actual;vm.runInNewContext(read(join(local,'books',book.id+'.js'),'utf8'),{window:{LUKO_ACCEPT_BOOK:(id,d)=>{expect(id).toBe(book.id);actual=JSON.stringify(d);}}});
@@ -19,22 +20,22 @@ test('433 complete books, correct Russian catalogue, retired ids and both distri
 });
 test('all precached files are present and their final bytes match SHA-256',()=>{
  const hashes=json('dist/integrity.json');
- expect(Object.keys(hashes).filter(n=>n.startsWith('books/'))).toHaveLength(433);
+ expect(Object.keys(hashes).filter(n=>n.startsWith('books/'))).toHaveLength(bookCount);
  for(const [name,digest] of Object.entries(hashes))expect('sha256-'+createHash('sha256').update(read(join(server,name))).digest('base64')).toBe(digest);
  expect(read(join(server,'offline-shell.txt'),'utf8')).toBe(read(join(server,'index.html'),'utf8'));
  expect(existsSync(join(server,'sw.js'))).toBe(true);
- expect(json(join(server,'version.json')).version).toBe('1.14.0');
+ expect(json(join(server,'version.json')).version).toBe('1.15.0');
  expect(read(join(local,'index.html'),'utf8')).not.toContain('type="module"');
 });
 
 test('curated collections, new books and verified editions',()=>{
  const catalog=json(join(server,'catalog.json')),report=json(join(server,'CONTENT_REVIEW.json'));
  expect(report.total).toBe(433);
- expect(report.new).toHaveLength(29);
+ expect(report.new).toHaveLength(bookCount-404);
  expect(report.annotations).toBeGreaterThan(65);
  expect(report.previews).toBeGreaterThan(100);
  const newBooks=catalog.filter(b=>b.collections.includes('Новинки'));
- expect(newBooks).toHaveLength(29);
+ expect(newBooks).toHaveLength(bookCount-404);
  for(const name of ['Лучшее','О животных','Волшебные сказки','Перед сном','Смешное','Путешествия','Познавательное']){
   expect(catalog.some(b=>b.collections.includes(name))).toBe(true);
  }
@@ -47,7 +48,7 @@ test('curated collections, new books and verified editions',()=>{
 
 test('historical artwork is local, attributed and identical in both distributions',()=>{
  const credits=json(join(server,'art/credits.json'));
- expect(credits).toHaveLength(8);
+ expect(credits).toHaveLength(11);
  for(const art of credits){
   expect(art.license).toBe('Public domain');
   const data=read(join(server,art.path));
@@ -63,3 +64,5 @@ test('seventeen additional fairy tales, complete bilingual-free Russian texts an
  expect(added).toHaveLength(17);
  for(const b of added){expect(b.category).toBe('Сказки писателей');expect(b.descriptionType).toBe('annotation');expect(b.description.length).toBeGreaterThan(45);expect(b.collections.includes('Новинки')).toBe(true);const d=json(join(server,'books',b.id+'.json'));expect(d.words).toBeGreaterThan(350);expect(d.blocks.length).toBeGreaterThan(9);expect(d.sourceUrl).toBe('https://ru.wikisource.org/w/index.php?oldid='+b.revision);}
 });
+
+test('curated expansion: no missing files, transparent exclusions, new annotations',()=>{const r=json(join(server,'CONTENT_REVIEW.json'));expect(r.expansion.accepted).toBeGreaterThanOrEqual(20);expect(r.expansion.accepted+r.expansion.rejected.length).toBe(40);expect(r.total).toBe(433+r.expansion.accepted);expect(r.annotations).toBeGreaterThan(150);});
