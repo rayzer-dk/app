@@ -1,0 +1,49 @@
+name: Danskdag archive checks
+on:
+  push:
+    paths:
+      - 'Danskdag_Offline_v*.zip'
+      - 'danskdag/**'
+  pull_request:
+    paths:
+      - 'Danskdag_Offline_v*.zip'
+      - 'danskdag/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate-offline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify latest offline package
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, zipfile
+          archives = list(pathlib.Path('.').glob('Danskdag_Offline_v*.zip'))
+          assert archives, 'No Danskdag offline archive in repository root'
+          def version(path):
+              m = re.fullmatch(r'Danskdag_Offline_v(\d+)\.(\d+)\.(\d+)\.zip', path.name)
+              assert m, f'Invalid archive name: {path.name}'
+              return tuple(map(int, m.groups()))
+          archive = max(archives, key=version)
+          expected = '.'.join(map(str, version(archive)))
+          with zipfile.ZipFile(archive) as z:
+              assert z.testzip() is None, 'Corrupt ZIP'
+              names = z.namelist()
+              assert len(names) == len(set(names)), 'Duplicate archive entries'
+              assert 'Danskdag.html' in names and 'Danskdag.ico' in names
+              assert 'README_START.txt' in names
+              html = z.read('Danskdag.html').decode('utf-8')
+              assert f'name="danskdag-version" content="{expected}"' in html
+              assert f"const APP_VERSION='{expected}';" in html
+              scripts = re.findall(r'<script\b[^>]*>(.*?)</script>', html, re.S)
+              assert scripts, 'Missing application script'
+              pathlib.Path('/tmp/danskdag.js').write_text('\n'.join(scripts), encoding='utf-8')
+              print(f'ZIP and version checks passed: {archive.name}')
+          PY
+          node --check /tmp/danskdag.js
