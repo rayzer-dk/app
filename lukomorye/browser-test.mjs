@@ -101,6 +101,7 @@ try{
     await page.waitForSelector('#reader',{state:'hidden'});
     await page.locator('[data-tab="Новинки"]').click();
     await page.waitForFunction(n=>document.querySelector('#result-count').textContent.startsWith(n+' '),count-404);
+    await page.locator('#search').fill('Карлик Нос');
     await page.locator('#books [data-open="n1003"]').click();
     await page.waitForSelector('#reading-text [data-para]');
     assert.equal(await page.locator('#reader-title').innerText(),'Карлик Нос');
@@ -125,6 +126,7 @@ try{
     await page.waitForFunction(()=>JSON.parse(localStorage.getItem('luko-progress')||'{}').n1003?.bookmarks?.length===2);
     await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&Number(document.querySelector('#stat-all')?.textContent)===457);
     await page.locator('[data-tab="Новинки"]').click();
+    await page.locator('#search').fill('Карлик Нос');
     await page.locator('#books [data-open="n1003"]').click();
     await page.waitForSelector('#reading-text [data-para]');
     await page.locator('#save-position').click();
