@@ -28,28 +28,12 @@ def choose(spec):
     author,country,suffix,edition=AUTHOR[spec['k']]
     if spec.get('verifiedEdition'):
         ed=spec['verifiedEdition'];blocks,count=extract(fetch({'revision':ed['revision'],'title':spec['title']}),{**spec,**ed});return ed['page'],ed['revision'],blocks,count
-    titles=[spec['title']]
-    aliases={'Хольгер Датчанин':['Гольгер-Данске'],'Ганс Чурбан':['Ганс Чурбан','Иванушка-дурачок'],'Что муженёк ни сделает, всё хорошо':['Уж что муженёк сделает, то и ладно'],'Снеговик':['Снегур'],'Эльф розового куста':['Эльф'],'Мотылёк':['Мотылек'],'Серебряная монетка':['Серебряная монета'],'Пятеро из одного стручка':['Пять из одного стручка'],'Рассказ Альмансора':['Жизнь Альмансора']}
-    titles+=aliases.get(spec['title'],[])
-    candidates=[]
-    for title in dict.fromkeys(titles):
-        if spec['k']=='w':candidates.append(title+' ('+suffix+')/1908 (ВТ:Ё)')
-        candidates.append(title+' ('+suffix+')')
-        if spec['k']=='a':candidates.append(title+' (Андерсен)')
-    # Query titles together at a fixed cutoff and inspect exact, non-redirect page.
-    data=api({'action':'query','prop':'revisions','titles':'|'.join(candidates),'rvstart':AS_OF,'rvlimit':1,'rvprop':'ids|timestamp'})
-    # Query may reject rvstart with multiple titles; use one title per request as fallback.
-    by={}
-    if 'error' not in data:
-        by={p.get('title'):p for p in data.get('query',{}).get('pages',[])}
-    for candidate in candidates:
-        page=by.get(candidate)
-        if not page:
-            d=api({'action':'query','prop':'revisions','titles':candidate,'rvstart':AS_OF,'rvlimit':1,'rvprop':'ids|timestamp'})
-            page=next(iter(d.get('query',{}).get('pages',[])),{})
-        if not page.get('revisions') or page.get('ns')!=0:continue
-        rev=page['revisions'][0]['revid']
-        html=fetch({'revision':rev,'title':spec['title']})
+    locked=spec['locked']
+    rev=locked['revision']
+    html=fetch({'revision':rev,'title':spec['title']})
+    # The revision and accepted text length are fixed by the successful build.
+    page={'title':spec['title']+' ('+suffix+')'}
+    for _ in (0,):
         soup=BeautifulSoup(html,'html.parser')
         raw=clean(soup.get_text(' ',strip=True))
         if 'общественное достояние' not in raw.casefold() and 'общественном достоянии' not in raw.casefold():continue
@@ -77,6 +61,7 @@ def choose(spec):
         letters=re.findall(r'[^\W\d_]',whole)
         if not letters or sum(bool(re.match(r'[А-Яа-яЁёѢѣІіѲѳѴѵ]',c)) for c in letters)/len(letters)<.92:continue
         # Full source transcription. Preserve actual end and revision, do not generate missing text.
+        assert count==locked['words'],f'Locked text length changed: {count}'
         return page['title'],rev,blocks,count
     raise ValueError('No qualifying complete Russian edition')
 def expand_fairy_library(out):
@@ -93,15 +78,19 @@ def expand_fairy_library(out):
             b['description']=ANNOTATIONS[b['id']];b['descriptionType']='annotation'
     added=[];rejected=[]
     for spec in SPECS:
+        if not spec.get('locked'):
+            rejected.append({'title':spec['title'],'reason':'Not accepted in final catalogue'})
+            continue
         try:
             assert key(spec['title']) not in seen,'Existing title'
             page,revision,blocks,count=choose(spec)
+            assert revision==spec['locked']['revision'] and count==spec['locked']['words'],'Locked edition mismatch'
             digest=hashlib.sha256(key(' '.join(b['text'] for b in blocks)).encode()).hexdigest()
             assert digest not in hashes,'Duplicate text'
             assert spec['id'] not in index,'Duplicate ID'
             author,country,_,edition=AUTHOR[spec['k']]
             source=f'https://ru.wikisource.org/w/index.php?oldid={revision}'
-            b={k:v for k,v in spec.items() if k not in ('k','verifiedEdition')}
+            b={k:v for k,v in spec.items() if k not in ('k','verifiedEdition','locked')}
             b.update(author=author,country=country,category='Сказки писателей',language='ru',revision=revision,page=page,minutes=max(1,math.ceil(count/120)),descriptionType='annotation',reference=edition+' Электронная редакция: Викитека (CC BY-SA, исходное произведение — общественное достояние).',collections=list(dict.fromkeys(['Новинки',*spec['collections']])),textRevision=1)
             doc={'id':b['id'],'page':page,'edition':b['reference'],'blocks':blocks,'words':count,'sourceUrl':source,'license':'Public domain original; Wikisource transcription CC BY-SA 4.0 where applicable'}
             path=out/'books'/f"{b['id']}.json";path.write_text(compact(doc),encoding='utf-8')
@@ -109,10 +98,9 @@ def expand_fairy_library(out):
             report['new'].append({'id':b['id'],'title':b['title'],'revision':revision,'words':count,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'sourceUrl':source,'edition':doc['edition']})
             print('FAIRY ACCEPTED',b['title'],count,'words',revision,flush=True)
         except Exception as err:
-            rejected.append({'title':spec['title'],'reason':str(err)})
-            print('FAIRY EXCLUDED',spec['title'],str(err),flush=True)
-        time.sleep(.15)
-    assert len(added)>=20,f'Only {len(added)} approved additions'
+            raise RuntimeError('Cannot restore final locked edition: '+spec['title']) from err
+        time.sleep(.5)
+    assert len(added)==24,f'Only {len(added)} locked additions'
     catalog=catalog[:20]+added+catalog[20:]
     report.update(version='1.15.0',total=len(catalog),expansion={'requested':len(SPECS),'accepted':len(added),'rejected':rejected,'cutoff':AS_OF,'review':'Whole source page and automated integrity checks; individual editorial proofreading pending.'},annotations=sum(b.get('descriptionType')=='annotation' for b in catalog),previews=sum(b.get('descriptionType')=='excerpt' for b in catalog))
     (out/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

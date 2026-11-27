@@ -14,7 +14,7 @@ def normalize(text):return clean(text).casefold().replace('ё','е')
 def fetch(spec):
     args=urllib.parse.urlencode({'action':'parse','oldid':spec['revision'],'prop':'text|revid','format':'json','formatversion':2,'disableeditsection':1})
     url='https://ru.wikisource.org/w/api.php?'+args
-    for i in range(3):
+    for i in range(6):
         try:
             request=urllib.request.Request(url,headers={'User-Agent':'LukomoryeLibrary/1.13 (https://github.com/rayzer-dk/app; public-domain offline reader)','Accept':'application/json'})
             with urllib.request.urlopen(request,timeout=35) as response:
@@ -23,8 +23,9 @@ def fetch(spec):
             if int(parsed['revid'])!=spec['revision']:raise ValueError('Wrong revision')
             return parsed['text']
         except Exception as error:
-            if i==2:raise RuntimeError('Failed to retrieve '+spec['title']) from error
-            time.sleep(2*(i+1))
+            if i==5:raise RuntimeError('Failed to retrieve '+spec['title']) from error
+            retry=getattr(error,'headers',{}).get('Retry-After','') if getattr(error,'headers',None) else ''
+            time.sleep(max(5*(i+1),int(retry) if retry.isdigit() else 0))
 def extract(html,spec):
     soup=BeautifulSoup(html,'html.parser')
     root=soup.select_one('.mw-parser-output') or soup

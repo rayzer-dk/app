@@ -6,6 +6,7 @@ import vm from 'node:vm';
 const server='dist/server',local='dist/offline';
 const json=p=>JSON.parse(read(p,'utf8'));
 const bookCount=json(join(server,'catalog.json')).length;
+test('final library is frozen at 457 works',()=>expect(bookCount).toBe(457));
 test('Complete books, correct Russian catalogue, retired ids and both distributions',()=>{
  const catalog=json(join(server,'catalog.json'));
  expect(catalog).toHaveLength(bookCount);expect(new Set(catalog.map(b=>b.id)).size).toBe(bookCount);
@@ -65,4 +66,4 @@ test('seventeen additional fairy tales, complete bilingual-free Russian texts an
  for(const b of added){expect(b.category).toBe('Сказки писателей');expect(b.descriptionType).toBe('annotation');expect(b.description.length).toBeGreaterThan(45);expect(b.collections.includes('Новинки')).toBe(true);const d=json(join(server,'books',b.id+'.json'));expect(d.words).toBeGreaterThan(350);expect(d.blocks.length).toBeGreaterThan(9);expect(d.sourceUrl).toBe('https://ru.wikisource.org/w/index.php?oldid='+b.revision);}
 });
 
-test('curated expansion: no missing files, transparent exclusions, new annotations',()=>{const r=json(join(server,'CONTENT_REVIEW.json'));expect(r.expansion.accepted).toBeGreaterThanOrEqual(23);expect(r.expansion.accepted+r.expansion.rejected.length).toBe(40);expect(r.total).toBe(433+r.expansion.accepted);expect(r.annotations).toBeGreaterThan(150);});
+test('curated expansion: no missing files, transparent exclusions, new annotations',()=>{const r=json(join(server,'CONTENT_REVIEW.json'));expect(r.expansion.accepted).toBe(24);expect(r.expansion.accepted+r.expansion.rejected.length).toBe(40);expect(r.total).toBe(433+r.expansion.accepted);expect(r.annotations).toBeGreaterThan(150);});

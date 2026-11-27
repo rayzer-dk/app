@@ -86,4 +86,4 @@ harden_file_state(OUT)
 from page_upgrade import add_page_mode
 add_page_mode(OUT)
 with (OUT/'styles.css').open('a',encoding='utf-8') as visual: visual.write('\n'+(HERE/'visual-finish.css').read_text(encoding='utf-8'))
-print('Prepared',VERSION,len(catalog),'books from verified source archive and patch')
+print('Prepared',VERSION,len(json.loads((OUT/'catalog.json').read_text(encoding='utf-8'))),'books from verified source archive and patch')
