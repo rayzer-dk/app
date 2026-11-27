@@ -79,5 +79,7 @@ from mobile_upgrade import refine_mobile
 refine_mobile(OUT)
 from reading_extras_upgrade import upgrade_extras
 upgrade_extras(OUT)
+from file_state_upgrade import harden_file_state
+harden_file_state(OUT)
 with (OUT/'styles.css').open('a',encoding='utf-8') as visual: visual.write('\n'+(HERE/'visual-finish.css').read_text(encoding='utf-8'))
 print('Prepared',VERSION,len(catalog),'books from verified source archive and patch')

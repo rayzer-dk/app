@@ -60,6 +60,7 @@ try{
     assert.equal(await page.locator('#view-compact').getAttribute('aria-pressed'),'true');
     assert(await page.locator('#books').evaluate(el=>el.classList.contains('compact-mode')));
     assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('luko-settings')||'{}').catalogLayout),'compact');
+    if(file)await page.evaluate(()=>{localStorage.removeItem('luko-settings');localStorage.removeItem('luko-mirror:luko-settings');});
     await page.reload();
     await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&document.querySelector('#stat-all')?.textContent==='433');
     await page.waitForFunction(()=>document.querySelector('#view-compact').getAttribute('aria-pressed')==='true');
@@ -118,6 +119,7 @@ try{
     await page.locator('#reader-back').click();
     await page.waitForSelector('#reader',{state:'hidden'});
     await page.waitForFunction(()=>!history.state?.lukoReader);
+    if(file)await page.evaluate(()=>{localStorage.removeItem('luko-progress');localStorage.removeItem('luko-mirror:luko-progress');});
     await page.reload();
     await page.waitForFunction(()=>JSON.parse(localStorage.getItem('luko-progress')||'{}').n1003?.bookmarks?.length===2);
     await page.waitForFunction(()=>document.body.dataset.libraryReady==='true'&&document.querySelector('#stat-all')?.textContent==='433');
