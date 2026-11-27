@@ -26,8 +26,8 @@ try{
     await ctx.addInitScript(()=>{if(!localStorage.getItem('luko-progress'))localStorage.setItem('luko-progress',JSON.stringify({b038:{done:true,percent:100,updated:12},b059:{percent:25,updated:13},b052:{percent:0,updated:14}}));});
     const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(String(e)));
     await page.goto(file?pathToFileURL(join(local,'index.html')).href:'http://127.0.0.1:'+server.address().port+'/library/');
-    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='404');
-    for(const [view,count] of [['done',1],['continue',1],['offline',404],['all',404]]){
+    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='412');
+    for(const [view,count] of [['done',1],['continue',1],['offline',412],['all',412]]){
      await page.locator('#search').fill('ненайденный текст');
      await page.locator('[data-stat-view="'+view+'"]').click();
      await page.waitForFunction(n=>document.querySelector('#result-count').textContent.startsWith(n+' '),count);
@@ -40,7 +40,7 @@ try{
     assert.equal(await page.locator('#view-compact').getAttribute('aria-pressed'),'true');
     assert(await page.locator('#books').evaluate(el=>el.classList.contains('compact-mode')));
     await page.reload();
-    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='404');
+    await page.waitForFunction(()=>document.querySelector('#stat-all')?.textContent==='412');
     assert.equal(await page.locator('#view-compact').getAttribute('aria-pressed'),'true');
     await page.locator('#view-grid').click();
     const favorite=page.locator('#books [data-fav]').first();
@@ -58,7 +58,7 @@ try{
     if(!file){
      await page.waitForFunction(()=>navigator.serviceWorker.controller!==null,{},{timeout:180000});
      await ctx.setOffline(true);await page.reload();
-     await page.waitForFunction(()=>document.querySelector('#stat-all').textContent==='404');
+     await page.waitForFunction(()=>document.querySelector('#stat-all').textContent==='412');
     }
     await page.locator('[data-stat-view="all"]').click();
     await page.locator('#search').fill('Сивка-бурка');
@@ -70,6 +70,13 @@ try{
     await page.locator('[data-stat-view="all"]').click();
     await page.locator('#surprise-book').click();
     await page.waitForSelector('#reading-text [data-para]');
+    await page.locator('#reader-back').click();
+    await page.waitForSelector('#reader',{state:'hidden'});
+    await page.locator('[data-tab="Новинки"]').click();
+    await page.waitForFunction(()=>document.querySelector('#result-count').textContent.startsWith('8 '));
+    await page.locator('#books [data-open="n1003"]').click();
+    await page.waitForSelector('#reading-text [data-para]');
+    assert.equal(await page.locator('#reader-title').innerText(),'Карлик Нос');
     await page.locator('#reader-back').click();
     await page.waitForSelector('#reader',{state:'hidden'});
     assert.deepEqual(errors,[]);

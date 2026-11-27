@@ -4,7 +4,7 @@ import base64, hashlib, json, math, re, shutil, sys, zipfile, zlib
 HERE = Path(__file__).resolve().parent
 BASE = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE.parent / 'Lukomorye_Server_v1.8.2.zip'
 OUT = HERE / 'src'
-VERSION = '1.9.0'
+VERSION = '1.10.0'
 raw = BASE.read_bytes()
 assert hashlib.sha1(f'blob {len(raw)}\0'.encode()+raw).hexdigest() == '08c36ed6618d110a483aee44582a445fc0f0bd8b', 'Wrong source archive'
 patch = (HERE/'delta-1.8.4.b64').read_bytes().strip()
@@ -67,4 +67,6 @@ review={'base':'1.8.2','version':'1.8.3','before':567,'after':404,'removed':{i:{
 (OUT/'version.json').write_text(json.dumps({'version':VERSION})+'\n',encoding='utf-8')
 from ui_upgrade import upgrade_ui
 upgrade_ui(OUT)
+from content_upgrade import upgrade_content
+upgrade_content(OUT)
 print('Prepared',VERSION,len(catalog),'books from verified source archive and patch')

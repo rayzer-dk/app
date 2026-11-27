@@ -23,6 +23,8 @@ jobs:
           registry-url: https://registry.npmjs.org
       - name: Install pinned dependencies
         run: npm install --no-audit --no-fund
+      - name: Install source parser
+        run: python3 -m pip install beautifulsoup4==4.14.3 --break-system-packages
       - name: Restore and verify source
         run: npm run prepare:source
       - name: Bundle server and autonomous versions
@@ -35,13 +37,13 @@ jobs:
         run: npm run test:browser
       - name: Create archives
         run: |
-          python3 -c "import shutil; shutil.make_archive('dist/Lukomorye_Server_v1.9.0','zip','dist/server'); shutil.make_archive('dist/Lukomorye_Autonomous_v1.9.0','zip','dist/offline')"
+          python3 -c "import shutil; shutil.make_archive('dist/Lukomorye_Server_v1.10.0','zip','dist/server'); shutil.make_archive('dist/Lukomorye_Autonomous_v1.10.0','zip','dist/offline')"
       - uses: actions/upload-artifact@v4
         with:
-          name: Lukomorye-v1.9.0
+          name: Lukomorye-v1.10.0
           path: |
-            lukomorye/dist/Lukomorye_Server_v1.9.0.zip
-            lukomorye/dist/Lukomorye_Autonomous_v1.9.0.zip
+            lukomorye/dist/Lukomorye_Server_v1.10.0.zip
+            lukomorye/dist/Lukomorye_Autonomous_v1.10.0.zip
             lukomorye/dist/integrity.json
             lukomorye/package-lock.json
           if-no-files-found: error
