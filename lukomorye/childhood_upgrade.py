@@ -48,7 +48,7 @@ def add_childhood(out):
         report['new'].append({'id':b['id'],'title':b['title'],'words':count,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'edition':edition,'sourceType':b['sourceType'],**({'sourceUrl':translation['sourceUrl'],'sourceRevision':translation['revision']} if translation else {})})
         print('Childhood text',b['title'],count,'words',flush=True)
     catalog=catalog[:20]+new+catalog[20:]
-    report.update(version='1.16.8',total=len(catalog),childhood={'added':len(new),'existing':len(PICKS),'total':len(PICKS)+len(new),'edition':'Source-attributed full translations where available; remaining retellings explicitly labelled.','completeTranslations':sum(b['sourceType']=='translation' for b in new),'retellingsPending':sum(b['sourceType']=='retelling' for b in new)},annotations=sum(b.get('descriptionType')=='annotation' for b in catalog))
+    report.update(version='1.16.9',total=len(catalog),childhood={'added':len(new),'existing':len(PICKS),'total':len(PICKS)+len(new),'edition':'Source-attributed full translations where available; remaining retellings explicitly labelled.','completeTranslations':sum(b['sourceType']=='translation' for b in new),'retellingsPending':sum(b['sourceType']=='retelling' for b in new)},annotations=sum(b.get('descriptionType')=='annotation' for b in catalog))
     assert len(catalog)==len(index)==457+len(SPECS)
     (out/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     (out/'catalog.js').write_text('window.LUKO_CATALOG = '+compact(catalog)+';\nwindow.LUKO_RETIRED_IDS = '+retired,encoding='utf-8')
@@ -57,10 +57,10 @@ def add_childhood(out):
     p=out/'app.js';s=p.read_text(encoding='utf-8')
     old="const categories=['Лучшее','Новинки','Русские народные'"
     assert old in s
-    s=s.replace(old,"const categories=['Лучшее','Сказки из нашего детства','Новинки','Русские народные'",1)
+    s=s.replace(old,"const categories=['Лучшее','Сказки из нашего детства','Украинские народные сказки','Новинки','Русские народные'",1)
     old="Object.assign(categoryIcon,{'Лучшее':'sparkles'"
     assert old in s
-    s=s.replace(old,"Object.assign(categoryIcon,{'Сказки из нашего детства':'book-open','Лучшее':'sparkles'",1)
+    s=s.replace(old,"Object.assign(categoryIcon,{'Сказки из нашего детства':'book-open','Украинские народные сказки':'book-open','Лучшее':'sparkles'",1)
     old="return book.sourceType==='local'?'':Number.isSafeInteger(book.revision)"
     assert old in s
     s=s.replace(old,"return book.sourceType==='translation'&&Number.isSafeInteger(book.sourceRevision)?'https://uk.wikisource.org/w/index.php?oldid='+book.sourceRevision:['local','retelling'].includes(book.sourceType)?'':Number.isSafeInteger(book.revision)",1)

@@ -1,0 +1,368 @@
+{
+  "referenceEdition": "Українські народні казки, Львів, Каменяр, 1966, 280 с.",
+  "sourceUrl": "https://irbis.cusu.edu.ua/cgi-bin/irbis64r_11/cgiirbis_64.exe?C21COM=S&I21DBN=BD2&LNG=uk&P21DBN=BD2&S21ALL=%28%3C.%3EK%3D%D0%A5%D0%BC%D0%B5%D0%BB%D1%8C%D0%BD%D0%B8%D1%86%D1%8C%D0%BA%D0%B8%D0%B9%3C.%3E%29&S21CNR=10&S21FMT=fullwebr&S21REF=5&S21SRD=DOWN&S21SRW=dz&S21STN=1&Z21ID=",
+  "requestedEdition": "https://libcat.ru/knigi/detskaya-literatura/skazka/222935-85-narodn-ukra-nsk-narodn-kazki.html#text",
+  "requestedEditionConfirmed": false,
+  "entries": [
+    {
+      "title": "Цар лев",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Пан Коцький",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16005"
+    },
+    {
+      "title": "Чоловік, вовк, дикий кабан і ведмідь",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Ведмежі жарти",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Як вовкові забажалося війтом бути",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Лисичка та журавель",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16025"
+    },
+    {
+      "title": "Лисичка-сестричка",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Цап та баран",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16012"
+    },
+    {
+      "title": "Як вовк забажав козенят",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Сірко",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16011"
+    },
+    {
+      "title": "Коза-дереза",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16006"
+    },
+    {
+      "title": "Колобок",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16024"
+    },
+    {
+      "title": "Ведмідь і гуцул",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Тхір",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Лисичка, котик і півник",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Вовча пісня",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Коли кінь позаздрив верблюдові",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Вовк, собака та кіт",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Іван-Побиван",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16019"
+    },
+    {
+      "title": "Про Івана Багатого",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Поради соловейка",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Яйце-райце",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16014"
+    },
+    {
+      "title": "Правда та кривда",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Чарівні люстро, килим і яблучко",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Два товариші",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16022"
+    },
+    {
+      "title": "Царівна-жаба",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Яструб - війтом",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Дідова дочка й бабина дочка",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Телесик",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16003"
+    },
+    {
+      "title": "Брат і сестра в лісі",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Песинський, жабинський, сухинський і золотокучеряві сини цариці",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Молодильна вода",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Юрза-Мурза і стрілець-молодець",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Золотий черевичок",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Про царівну, душа котрої була в яйці в осокорі",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Про бідного парубка і царівну",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Безрука сестра",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Кирило Кожум’яка",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16018"
+    },
+    {
+      "title": "Про богатиря Буха Копитовича",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Казка про Іллю Муромця і солов’я розбійника",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Дідова дочка і золота яблунька",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Мудра дівчина",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16023"
+    },
+    {
+      "title": "Лінива",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Видимо й Невидимо",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Як Мордхо бога обдурив",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Як дід видоїв трьох цапів",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Мітляр",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Ківш лиха",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Плодівник",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Спільник",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Як пани ночували",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Солдат і смерть",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Три брати",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Чудесний коник",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Гроші - смерть",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Піп і його слуга",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Біда",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Калиточка",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16020"
+    },
+    {
+      "title": "Циган-косар",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Як Іван царя перебрехав",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Як пан по-німецькому балакав",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Ненаситний піп",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Як солдат царя обдурив",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Як Микола був коровою",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Заяче сало",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16021"
+    },
+    {
+      "title": "Брехня",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Дотепний жарт",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Язиката Хвеська",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16001"
+    },
+    {
+      "title": "Калинова сопілка",
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16026"
+    },
+    {
+      "title": "Десятник",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Про опришка і драговського пана",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Довбуш карає пана",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Допомога Довбуша біднякові",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "На ярмарку",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Зустріч Кармалюка з паном",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Як Кармалюк пана сповідав",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Кармалюк і багач",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Кармалюк і бідний чоловік",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Як Кармалюк дістав гроші",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Про Палія та Мазепу",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Цар Петро і Палій",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Про запорожців та царицю Катерину",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Як запорожці висватали наймита",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Хмельницький і Барабаш",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Про запорожців",
+      "status": "needs_edition_and_source_review"
+    },
+    {
+      "title": "Кошовий Сірко",
+      "status": "needs_edition_and_source_review"
+    }
+  ]
+}
