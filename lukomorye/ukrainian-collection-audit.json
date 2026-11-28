@@ -74,7 +74,11 @@
     },
     {
       "title": "Лисичка, котик і півник",
-      "status": "needs_edition_and_source_review"
+      "status": "alternative_ukrainian_record",
+      "bookId": "n16029",
+      "sourceUrl": "https://uk.wikisource.org/w/index.php?oldid=670725",
+      "sourceRevision": 670725,
+      "exactEditionVerified": false
     },
     {
       "title": "Вовча пісня",
@@ -125,7 +129,10 @@
     },
     {
       "title": "Царівна-жаба",
-      "status": "needs_edition_and_source_review"
+      "status": "historical_source_identified_translation_pending",
+      "candidateSource": "https://uk.wikisource.org/w/index.php?oldid=366069",
+      "sourceRevision": 366069,
+      "note": "Full online transcription located; translation pending. Українські народні казки, 1920"
     },
     {
       "title": "Яструб - війтом",
@@ -134,8 +141,9 @@
     {
       "title": "Дідова дочка й бабина дочка",
       "status": "historical_source_identified_translation_pending",
-      "candidateSource": "https://uk.wikisource.org/wiki/Народныя_южнорусскія_сказки/2",
-      "note": "Rudchenko 1870 vol. II no.19 p.54; separate transcription unavailable"
+      "candidateSource": "https://uk.wikisource.org/w/index.php?oldid=668396",
+      "note": "Full online transcription located; translation pending. Баю-баю, 1918",
+      "sourceRevision": 668396
     },
     {
       "title": "Телесик",
@@ -145,8 +153,8 @@
     {
       "title": "Брат і сестра в лісі",
       "status": "historical_source_identified_translation_pending",
-      "candidateSource": "https://uk.wikisource.org/wiki/Народныя_южнорусскія_сказки/2",
-      "note": "Rudchenko 1870 vol. II no.22 p.67; index located"
+      "candidateSource": "https://uk.wikisource.org/wiki/Українські_народні_казки_(1920)/Брат_і_сестра_в_лісі",
+      "note": "1920 public-domain edition, full online transcription located; translation pending."
     },
     {
       "title": "Песинський, жабинський, сухинський і золотокучеряві сини цариці",
@@ -379,5 +387,16 @@
       "status": "needs_edition_and_source_review"
     }
   ],
-  "requestedEditionAccess": "LibCat URL inaccessible during 2026-11-28 check; no matching bibliographic identity established."
+  "requestedEditionAccess": "LibCat URL returned an access error on 2026-11-28; exact edition unconfirmed.",
+  "comparisonEditions": [
+    {
+      "edition": "Каменяр, Львів, 1966",
+      "url": "https://irbis.cusu.edu.ua/cgi-bin/irbis64r_11/cgiirbis_64.exe?C21COM=S&I21DBN=BD2&LNG=uk&P21DBN=BD2&S21ALL=%28%3C.%3EK%3D%D0%A5%D0%BC%D0%B5%D0%BB%D1%8C%D0%BD%D0%B8%D1%86%D1%8C%D0%BA%D0%B8%D0%B9%3C.%3E%29&S21CNR=10&S21FMT=fullwebr&S21REF=5&S21SRD=DOWN&S21SRW=dz&S21STN=1&Z21ID="
+    },
+    {
+      "edition": "Каменяр, 1977",
+      "url": "https://www.olx.ua/d/uk/obyavlenie/ukransk-narodn-kazki-1977-vdavnitstvo-kamenyar-ID119UDe.html",
+      "note": "Photographed contents partly confirm the sequence; not a complete verified transcription."
+    }
+  ]
 }
