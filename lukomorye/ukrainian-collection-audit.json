@@ -155,9 +155,13 @@
     },
     {
       "title": "Брат і сестра в лісі",
-      "status": "historical_source_identified_translation_pending",
+      "status": "alternative_ukrainian_record",
       "candidateSource": "https://uk.wikisource.org/wiki/Українські_народні_казки_(1920)/Брат_і_сестра_в_лісі",
-      "note": "1920 public-domain edition, full online transcription located; translation pending."
+      "note": "Full translation of the 1920 printed record.",
+      "bookId": "n16035",
+      "sourceUrl": "https://uk.wikisource.org/w/index.php?oldid=366025",
+      "sourceRevision": 366025,
+      "exactEditionVerified": false
     },
     {
       "title": "Песинський, жабинський, сухинський і золотокучеряві сини цариці",
