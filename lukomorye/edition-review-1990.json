@@ -285,7 +285,11 @@
       {
         "title": "Як Микола був коровою",
         "group": "Социально-бытовые",
-        "status": "pending_full_catalog_and_text_review"
+        "status": "alternative_full_record_added",
+        "id": "n16034",
+        "sourceUrl": "https://uk.wikisource.org/w/index.php?oldid=95031",
+        "sourceRevision": 95031,
+        "exactEditionVerified": false
       },
       {
         "title": "Піп та селянин",
@@ -351,7 +355,11 @@
       {
         "title": "Про липку і зажерливу бабу",
         "group": "Социально-бытовые",
-        "status": "pending_full_catalog_and_text_review"
+        "status": "alternative_full_record_added",
+        "id": "n16033",
+        "sourceUrl": "https://uk.wikisource.org/w/index.php?oldid=94732",
+        "sourceRevision": 94732,
+        "exactEditionVerified": false
       },
       {
         "title": "Хліб і золото",

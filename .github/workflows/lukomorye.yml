@@ -36,20 +36,23 @@ jobs:
       - name: Playwright mobile, desktop and offline tests
         run: npm run test:browser
       - name: Create archives
+        id: package
         run: |
-          python3 -c "import shutil; shutil.make_archive('dist/Lukomorye_Server_v2.0.2','zip','dist/server'); shutil.make_archive('dist/Lukomorye_Autonomous_v2.0.2','zip','dist/offline')"
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          python3 -c "import shutil,sys; v=sys.argv[1]; shutil.make_archive('dist/Lukomorye_Server_v'+v,'zip','dist/server'); shutil.make_archive('dist/Lukomorye_Autonomous_v'+v,'zip','dist/offline')" "$VERSION"
       - name: Build self-contained Android HTML
-        run: python3 single_html.py dist/Lukomorye_Autonomous_v2.0.1.zip dist/Lukomorye_v2.0.1.html
+        run: python3 single_html.py "dist/Lukomorye_Autonomous_v${{ steps.package.outputs.version }}.zip" "dist/Lukomorye_v${{ steps.package.outputs.version }}.html"
       - name: Test self-contained offline HTML
         run: node single-test.mjs
       - uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: Lukomorye-v2.0.2
+          name: Lukomorye-v${{ steps.package.outputs.version }}
           path: |
-            lukomorye/dist/Lukomorye_Server_v2.0.1.zip
-            lukomorye/dist/Lukomorye_Autonomous_v2.0.1.zip
-            lukomorye/dist/Lukomorye_v2.0.1.html
+            lukomorye/dist/Lukomorye_Server_v${{ steps.package.outputs.version }}.zip
+            lukomorye/dist/Lukomorye_Autonomous_v${{ steps.package.outputs.version }}.zip
+            lukomorye/dist/Lukomorye_v${{ steps.package.outputs.version }}.html
             lukomorye/dist/integrity.json
             lukomorye/package-lock.json
             lukomorye/dist/visual/*.png
