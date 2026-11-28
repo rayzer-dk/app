@@ -61,7 +61,11 @@
       {
         "title": "Лисичка-суддя",
         "group": "О животных",
-        "status": "pending_full_catalog_and_text_review"
+        "status": "alternative_full_record_added",
+        "id": "n16031",
+        "sourceUrl": "https://uk.wikisource.org/w/index.php?oldid=395760",
+        "sourceRevision": 395760,
+        "exactEditionVerified": false
       },
       {
         "title": "Лисичка-сестричка і вовк-панібрат",
@@ -128,7 +132,11 @@
       {
         "title": "Лисичка, тиковка, скрипка та капкан",
         "group": "О животных",
-        "status": "pending_full_catalog_and_text_review"
+        "status": "alternative_full_record_added",
+        "id": "n16032",
+        "sourceUrl": "https://uk.wikisource.org/w/index.php?oldid=94781",
+        "sourceRevision": 94781,
+        "exactEditionVerified": false
       },
       {
         "title": "Як заєць ошукав ведмедя",
@@ -395,5 +403,6 @@
       "note": "Checked narrative order and ending; polished idioms without merging in later edition."
     }
   ],
-  "limitations": "Not independent professional proofreading. No claim that LibCat edition is identical. Other translations not marked reviewed."
+  "limitations": "Not independent professional proofreading. No claim that LibCat edition is identical. Other translations not marked reviewed.",
+  "scope": "Complete public-domain folk records from any edition are acceptable; no requirement to reproduce a specific modern edition. Keep original length, plot, dialogue and source attribution."
 }

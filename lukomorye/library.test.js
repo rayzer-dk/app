@@ -6,7 +6,7 @@ import vm from 'node:vm';
 const server='dist/server',local='dist/offline';
 const json=p=>JSON.parse(read(p,'utf8'));
 const bookCount=json(join(server,'catalog.json')).length;
-test('library contains 487 works',()=>expect(bookCount).toBe(487));
+test('library contains 489 works',()=>expect(bookCount).toBe(489));
 test('Complete books, correct Russian catalogue, retired ids and both distributions',()=>{
  const catalog=json(join(server,'catalog.json'));
  expect(catalog).toHaveLength(bookCount);expect(new Set(catalog.map(b=>b.id)).size).toBe(bookCount);
@@ -25,7 +25,7 @@ test('all precached files are present and their final bytes match SHA-256',()=>{
  for(const [name,digest] of Object.entries(hashes))expect('sha256-'+createHash('sha256').update(read(join(server,name))).digest('base64')).toBe(digest);
  expect(read(join(server,'offline-shell.txt'),'utf8')).toBe(read(join(server,'index.html'),'utf8'));
  expect(existsSync(join(server,'sw.js'))).toBe(true);
- expect(json(join(server,'version.json')).version).toBe('2.0.1');
+ expect(json(join(server,'version.json')).version).toBe('2.0.2');
  expect(read(join(local,'index.html'),'utf8')).not.toContain('type="module"');
 });
 
@@ -68,9 +68,9 @@ test('seventeen additional fairy tales, complete bilingual-free Russian texts an
 
 test('curated expansion: no missing files, transparent exclusions, new annotations',()=>{const r=json(join(server,'CONTENT_REVIEW.json'));expect(r.expansion.accepted).toBe(24);expect(r.expansion.accepted+r.expansion.rejected.length).toBe(40);expect(r.total).toBe(433+r.expansion.accepted+r.childhood.added);expect(r.annotations).toBeGreaterThan(150);});
 
-test('childhood shelf, Russian retellings and existing aliases',()=>{const catalog=json(join(server,'catalog.json')),report=json(join(server,'CONTENT_REVIEW.json'));const shelf=catalog.filter(b=>b.collections?.includes('Сказки из нашего детства'));expect(shelf).toHaveLength(99);expect(report.childhood.added).toBe(30);for(const b of shelf.filter(b=>b.sourceType==='retelling')){expect(b.language).toBe('ru');expect(b.reference).toContain('Самостоятельный русский пересказ');expect(json(join(server,'books',b.id+'.json')).words).toBeGreaterThanOrEqual(180);}expect(catalog.find(b=>b.id==='af031').aliases).toContain('Жихарка');});
+test('childhood shelf, Russian retellings and existing aliases',()=>{const catalog=json(join(server,'catalog.json')),report=json(join(server,'CONTENT_REVIEW.json'));const shelf=catalog.filter(b=>b.collections?.includes('Сказки из нашего детства'));expect(shelf).toHaveLength(101);expect(report.childhood.added).toBe(32);for(const b of shelf.filter(b=>b.sourceType==='retelling')){expect(b.language).toBe('ru');expect(b.reference).toContain('Самостоятельный русский пересказ');expect(json(join(server,'books',b.id+'.json')).words).toBeGreaterThanOrEqual(180);}expect(catalog.find(b=>b.id==='af031').aliases).toContain('Жихарка');});
 
-test('source-attributed translations and transparent structural audit',()=>{const a=json(join(server,'TEXT_AUDIT.json')),c=json(join(server,'catalog.json'));expect(a.total).toBe(487);expect(a.fullTranslations).toBe(28);expect(a.retellingsPending).toBe(2);expect(a.exactDuplicates).toEqual([]);for(const b of c.filter(b=>b.sourceType==='translation')){expect([2,3]).toContain(b.textRevision);expect(b.sourceUrl).toBe('https://uk.wikisource.org/w/index.php?oldid='+b.sourceRevision);expect(json(join(server,'books',b.id+'.json')).sourceUrl).toBe(b.sourceUrl);}});
+test('source-attributed translations and transparent structural audit',()=>{const a=json(join(server,'TEXT_AUDIT.json')),c=json(join(server,'catalog.json'));expect(a.total).toBe(489);expect(a.fullTranslations).toBe(30);expect(a.retellingsPending).toBe(2);expect(a.exactDuplicates).toEqual([]);for(const b of c.filter(b=>b.sourceType==='translation')){expect([2,3]).toContain(b.textRevision);expect(b.sourceUrl).toBe('https://uk.wikisource.org/w/index.php?oldid='+b.sourceRevision);expect(json(join(server,'books',b.id+'.json')).sourceUrl).toBe(b.sourceUrl);}});
 
 test('four further source translations preserve distinctive original episodes and endings',()=>{const book=id=>json(join(server,'books',id+'.json'));const plain=id=>book(id).blocks.map(b=>b.text).join('\n');expect(book('n16002').sourceRevision).toBe(668411);expect(plain('n16002')).toContain('пока и растаял');expect(book('n16011').sourceRevision).toBe(488020);expect(plain('n16011')).toContain('гречневые галушки');expect(book('n16015').sourceRevision).toBe(94883);expect(plain('n16015')).toContain('двенадцать');expect(book('n16016').sourceRevision).toBe(94904);expect(plain('n16016')).toContain('я притихну');expect(book('n16016').words).toBeLessThan(250);});
 
@@ -84,7 +84,7 @@ test('two further complete folk variants, distinct endings and pinned sources',(
 
 test('Kolosok and Oh complete folk records',()=>{const book=id=>json(join(server,'books',id+'.json'));const k=book('n16010'),o=book('n16013');expect(k.sourceRevision).toBe(395759);expect(k.words).toBeGreaterThan(300);expect(k.blocks.at(-1).text).toContain('пирожками');expect(o.sourceRevision).toBe(236759);expect(o.words).toBeGreaterThan(1800);expect(o.blocks.map(b=>b.text).join(' ')).toContain('гранатовое кольцо');expect(o.blocks.at(-1).text).toContain('свадьбу');});
 
-test('Ukrainian folklore shelf contains all 28 translations with stable original names',()=>{const c=json(join(server,'catalog.json'));const shelf=c.filter(b=>b.collections?.includes('Украинские народные сказки'));expect(shelf).toHaveLength(28);for(const b of shelf)expect(b.sourceType).toBe('translation');for(const [id,rev] of [['n16024',486864],['n16025',1047374],['n16026',94737]]){const b=shelf.find(b=>b.id===id);expect(b.sourceRevision).toBe(rev);expect(json(join(server,'books',id+'.json')).words).toBeGreaterThan(200);}});
+test('Ukrainian folklore shelf contains all 30 translations with stable original names',()=>{const c=json(join(server,'catalog.json'));const shelf=c.filter(b=>b.collections?.includes('Украинские народные сказки'));expect(shelf).toHaveLength(30);for(const b of shelf)expect(b.sourceType).toBe('translation');for(const [id,rev] of [['n16024',486864],['n16025',1047374],['n16026',94737]]){const b=shelf.find(b=>b.id===id);expect(b.sourceRevision).toBe(rev);expect(json(join(server,'books',id+'.json')).words).toBeGreaterThan(200);}});
 
 test('new source-complete wolf and truth variants retain original endings',()=>{const b=id=>json(join(server,'books',id+'.json'));expect(b('n16027').sourceRevision).toBe(94993);expect(b('n16027').blocks.at(-1).text).toContain('живы и здоровы');expect(b('n16027').words).toBeGreaterThan(650);expect(b('n16028').sourceRevision).toBe(366084);expect(b('n16028').blocks.at(-1).text).toContain('назад не вернулась');expect(b('n16028').words).toBeGreaterThan(500);});
 
@@ -93,3 +93,5 @@ test('1918 Ukrainian cat and rooster variant retains the three abductions and fi
 test('single-digit application version and 1918 stepdaughter record',()=>{expect(json(join(server,'version.json')).version).toMatch(/^\d\.\d\.\d$/);const d=json(join(server,'books','n16030.json'));expect(d.sourceRevision).toBe(668396);expect(d.words).toBeGreaterThan(1400);expect(d.blocks.at(-1).text).toContain('живой вернулась');});
 
 test('reviewed translations retain source episodes and updated revisions',()=>{const c=json(join(server,'catalog.json'));for(const id of ['n16008','n16029','n16030'])expect(c.find(b=>b.id===id).textRevision).toBe(3);const d=json(join(server,'books','n16029.json'));const t=d.blocks.map(b=>b.text).join('\n');expect(t).toContain('Вот и хитрит');expect(t).toContain('Петушок, братик, отвори! Петушок, братик, отвори!');expect(t).toContain('Ой, у лиски, лиски новый двор');});
+
+test('short original Ukrainian folk records retain endings without padding',()=>{const b=id=>json(join(server,'books',id+'.json'));expect(b('n16031').sourceRevision).toBe(395760);expect(b('n16031').blocks.at(-1).text).toContain('поделила');expect(b('n16032').sourceRevision).toBe(94781);expect(b('n16032').blocks.at(-1).text).toContain('забрал');for(const id of ['n16031','n16032']){expect(b(id).words).toBeGreaterThan(80);expect(b(id).words).toBeLessThan(250);}});

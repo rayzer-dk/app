@@ -24,7 +24,7 @@ jobs:
       - name: Install pinned dependencies
         run: npm install --no-audit --no-fund
       - name: Install source parser
-        run: python3 -m pip install beautifulsoup4==4.14.3 Pillow==12.0.1 --break-system-packages
+        run: python3 -m pip install beautifulsoup4==4.14.3 Pillow==12.0.0 --break-system-packages
       - name: Restore and verify source
         run: npm run prepare:source
       - name: Bundle server and autonomous versions
@@ -37,7 +37,7 @@ jobs:
         run: npm run test:browser
       - name: Create archives
         run: |
-          python3 -c "import shutil; shutil.make_archive('dist/Lukomorye_Server_v2.0.1','zip','dist/server'); shutil.make_archive('dist/Lukomorye_Autonomous_v2.0.1','zip','dist/offline')"
+          python3 -c "import shutil; shutil.make_archive('dist/Lukomorye_Server_v2.0.2','zip','dist/server'); shutil.make_archive('dist/Lukomorye_Autonomous_v2.0.2','zip','dist/offline')"
       - name: Build self-contained Android HTML
         run: python3 single_html.py dist/Lukomorye_Autonomous_v2.0.1.zip dist/Lukomorye_v2.0.1.html
       - name: Test self-contained offline HTML
@@ -45,7 +45,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: Lukomorye-v2.0.1
+          name: Lukomorye-v2.0.2
           path: |
             lukomorye/dist/Lukomorye_Server_v2.0.1.zip
             lukomorye/dist/Lukomorye_Autonomous_v2.0.1.zip

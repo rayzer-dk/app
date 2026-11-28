@@ -13,7 +13,7 @@ try{
   await page.setContent(html,{waitUntil:'domcontentloaded',timeout:60000});
   await context.setOffline(true);
   await page.waitForFunction(()=>document.body.dataset.libraryReady==='true');
-  assert.equal(await page.locator('#stat-all').innerText(),'487');
+  assert.equal(await page.locator('#stat-all').innerText(),'489');
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
   assert(await page.locator('img').first().evaluate(i=>i.complete&&i.naturalWidth>0));
   await page.locator('#search').fill('Коза-дереза');
