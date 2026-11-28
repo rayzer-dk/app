@@ -25,7 +25,7 @@ test('all precached files are present and their final bytes match SHA-256',()=>{
  for(const [name,digest] of Object.entries(hashes))expect('sha256-'+createHash('sha256').update(read(join(server,name))).digest('base64')).toBe(digest);
  expect(read(join(server,'offline-shell.txt'),'utf8')).toBe(read(join(server,'index.html'),'utf8'));
  expect(existsSync(join(server,'sw.js'))).toBe(true);
- expect(json(join(server,'version.json')).version).toBe('1.16.7');
+ expect(json(join(server,'version.json')).version).toBe('1.16.8');
  expect(read(join(local,'index.html'),'utf8')).not.toContain('type="module"');
 });
 
@@ -70,7 +70,7 @@ test('curated expansion: no missing files, transparent exclusions, new annotatio
 
 test('childhood shelf, Russian retellings and existing aliases',()=>{const catalog=json(join(server,'catalog.json')),report=json(join(server,'CONTENT_REVIEW.json'));const shelf=catalog.filter(b=>b.collections?.includes('Сказки из нашего детства'));expect(shelf).toHaveLength(92);expect(report.childhood.added).toBe(23);for(const b of shelf.filter(b=>b.sourceType==='retelling')){expect(b.language).toBe('ru');expect(b.reference).toContain('Самостоятельный русский пересказ');expect(json(join(server,'books',b.id+'.json')).words).toBeGreaterThanOrEqual(180);}expect(catalog.find(b=>b.id==='af031').aliases).toContain('Жихарка');});
 
-test('source-attributed translations and transparent structural audit',()=>{const a=json(join(server,'TEXT_AUDIT.json')),c=json(join(server,'catalog.json'));expect(a.total).toBe(480);expect(a.fullTranslations).toBe(19);expect(a.retellingsPending).toBe(4);expect(a.exactDuplicates).toEqual([]);for(const b of c.filter(b=>b.sourceType==='translation')){expect(b.textRevision).toBe(2);expect(b.sourceUrl).toBe('https://uk.wikisource.org/w/index.php?oldid='+b.sourceRevision);expect(json(join(server,'books',b.id+'.json')).sourceUrl).toBe(b.sourceUrl);}});
+test('source-attributed translations and transparent structural audit',()=>{const a=json(join(server,'TEXT_AUDIT.json')),c=json(join(server,'catalog.json'));expect(a.total).toBe(480);expect(a.fullTranslations).toBe(21);expect(a.retellingsPending).toBe(2);expect(a.exactDuplicates).toEqual([]);for(const b of c.filter(b=>b.sourceType==='translation')){expect(b.textRevision).toBe(2);expect(b.sourceUrl).toBe('https://uk.wikisource.org/w/index.php?oldid='+b.sourceRevision);expect(json(join(server,'books',b.id+'.json')).sourceUrl).toBe(b.sourceUrl);}});
 
 test('four further source translations preserve distinctive original episodes and endings',()=>{const book=id=>json(join(server,'books',id+'.json'));const plain=id=>book(id).blocks.map(b=>b.text).join('\n');expect(book('n16002').sourceRevision).toBe(668411);expect(plain('n16002')).toContain('пока и растаял');expect(book('n16011').sourceRevision).toBe(488020);expect(plain('n16011')).toContain('гречневые галушки');expect(book('n16015').sourceRevision).toBe(94883);expect(plain('n16015')).toContain('двенадцать');expect(book('n16016').sourceRevision).toBe(94904);expect(plain('n16016')).toContain('я притихну');expect(book('n16016').words).toBeLessThan(250);});
 
@@ -81,3 +81,5 @@ test('Egg tale uses full source rather than short plot summary',()=>{const d=jso
 test('three new Ukrainian folk records and familiar hero aliases',()=>{const book=id=>json(join(server,'books',id+'.json'));const c=json(join(server,'catalog.json'));for(const [id,rev,end,min] of [['n16019',94718,'так только его и видели',600],['n16020',94738,'двенадцать возов',350],['n16021',94707,'заячье сало',200]]){const d=book(id);expect(d.sourceRevision).toBe(rev);expect(d.words).toBeGreaterThan(min);expect(d.blocks.at(-1).text).toContain(end);}expect(c.find(b=>b.id==='af103').aliases).toContain('Илья Муромец и Соловей-разбойник');expect(c.find(b=>b.id==='b062').aliases).toContain('Василиса Премудрая');});
 
 test('two further complete folk variants, distinct endings and pinned sources',()=>{const readBook=id=>json(join(server,'books',id+'.json'));for(const [id,rev,end,min] of [['n16022',93888,'баранок связка',600],['n16023',612193,'отпустил её',850]]){const d=readBook(id);expect(d.sourceRevision).toBe(rev);expect(d.words).toBeGreaterThan(min);expect(d.blocks.at(-1).text).toContain(end);}});
+
+test('Kolosok and Oh complete folk records',()=>{const book=id=>json(join(server,'books',id+'.json'));const k=book('n16010'),o=book('n16013');expect(k.sourceRevision).toBe(395759);expect(k.words).toBeGreaterThan(300);expect(k.blocks.at(-1).text).toContain('пирожками');expect(o.sourceRevision).toBe(236759);expect(o.words).toBeGreaterThan(1800);expect(o.blocks.map(b=>b.text).join(' ')).toContain('гранатовое кольцо');expect(o.blocks.at(-1).text).toContain('свадьбу');});
