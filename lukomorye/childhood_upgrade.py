@@ -40,7 +40,7 @@ def add_childhood(out):
         b.update(category='Русские народные' if b['country']=='Русские' else 'Сказки мира',author=nation+' народная сказка',language='ru',minutes=max(1,math.ceil(count/120)),reference=edition,descriptionType='annotation',sourceType='retelling',collections=list(dict.fromkeys(['Новинки',SHELF,*spec['collections']])),textRevision=1,page='')
         doc={'id':b['id'],'page':'','edition':edition,'blocks':blocks,'words':count,'bundled':True,'sourceType':'retelling'}
         if translation:
-            b.update(sourceType='translation',sourceUrl=translation['sourceUrl'],sourceLanguage='uk',sourceRevision=translation['revision'],textRevision=2,reference=edition)
+            b.update(sourceType='translation',sourceUrl=translation['sourceUrl'],sourceLanguage='uk',sourceRevision=translation['revision'],textRevision=translation.get('textRevision',2),reference=edition)
             doc.update(sourceType='translation',sourceUrl=translation['sourceUrl'],sourceLanguage='uk',sourceRevision=translation['revision'],license=translation['license'],edition=edition)
         path=out/'books'/f"{b['id']}.json";path.write_text(compact(doc),encoding='utf-8')
         index[b['id']]={'words':count}
@@ -48,7 +48,7 @@ def add_childhood(out):
         report['new'].append({'id':b['id'],'title':b['title'],'words':count,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'edition':edition,'sourceType':b['sourceType'],**({'sourceUrl':translation['sourceUrl'],'sourceRevision':translation['revision']} if translation else {})})
         print('Childhood text',b['title'],count,'words',flush=True)
     catalog=catalog[:20]+new+catalog[20:]
-    report.update(version='2.0.0',total=len(catalog),childhood={'added':len(new),'existing':len(PICKS),'total':len(PICKS)+len(new),'edition':'Source-attributed full translations where available; remaining retellings explicitly labelled.','completeTranslations':sum(b['sourceType']=='translation' for b in new),'retellingsPending':sum(b['sourceType']=='retelling' for b in new)},annotations=sum(b.get('descriptionType')=='annotation' for b in catalog))
+    report.update(version='2.0.1',total=len(catalog),childhood={'added':len(new),'existing':len(PICKS),'total':len(PICKS)+len(new),'edition':'Source-attributed full translations where available; remaining retellings explicitly labelled.','completeTranslations':sum(b['sourceType']=='translation' for b in new),'retellingsPending':sum(b['sourceType']=='retelling' for b in new)},annotations=sum(b.get('descriptionType')=='annotation' for b in catalog))
     assert len(catalog)==len(index)==457+len(SPECS)
     (out/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     (out/'catalog.js').write_text('window.LUKO_CATALOG = '+compact(catalog)+';\nwindow.LUKO_RETIRED_IDS = '+retired,encoding='utf-8')

@@ -1,0 +1,399 @@
+{
+  "date": "2026-11-28",
+  "requestedEdition": {
+    "url": "https://libcat.ru/knigi/detskaya-literatura/skazka/222935-85-narodn-ukra-nsk-narodn-kazki.html#text",
+    "status": "unavailable_exact_identity_unconfirmed"
+  },
+  "candidateEdition": {
+    "title": "Українські народні казки",
+    "editor": "Л. Ф. Дунаєвська",
+    "publisher": "Веселка",
+    "city": "Київ",
+    "year": 1990,
+    "isbn": "5-301-01020-4",
+    "source": "https://ru.djvu.online/file/OYQmC4mGZDiBc",
+    "contentsPages": [
+      270,
+      271
+    ],
+    "note": "OCR-based contents; ambiguous readings need scan confirmation. Separate from 1966 comparison. Modern editorial matter not imported.",
+    "entries": [
+      {
+        "title": "Рукавичка",
+        "group": "О животных",
+        "status": "same_plot_minor_edition_difference",
+        "id": "n16008",
+        "note": "1918 begins without the dog; 1990 mentions the dog in the opening. All seven animals, their order, repeated dialogue and ending correspond."
+      },
+      {
+        "title": "Колобок",
+        "group": "О животных",
+        "status": "candidate_same_plot_unreviewed",
+        "candidateBookIds": [
+          "n16024"
+        ],
+        "id": "n16024",
+        "note": "Opening and refrain appear close; full collation pending."
+      },
+      {
+        "title": "Цап та баран",
+        "group": "О животных",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16012"
+        ]
+      },
+      {
+        "title": "Телятко, кабан, півник, качур та вовки",
+        "group": "О животных",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Півник і двоє мишенят",
+        "group": "О животных",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Лисиця та рак",
+        "group": "О животных",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Лисичка-суддя",
+        "group": "О животных",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Лисичка-сестричка і вовк-панібрат",
+        "group": "О животных",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Пан Коцький",
+        "group": "О животных",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16005"
+        ]
+      },
+      {
+        "title": "Кіт, кріт, курочка та лисиця",
+        "group": "О животных",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Солом’яний бичок",
+        "group": "О животных",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16002"
+        ]
+      },
+      {
+        "title": "Коза-дереза",
+        "group": "О животных",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16006"
+        ]
+      },
+      {
+        "title": "Чому гуси миються у воді, коти — на печі, а кури порпаються в поросі",
+        "group": "О животных",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Хвалькувата муха",
+        "group": "О животных",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Ракова скора робота",
+        "group": "О животных",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Хитрий півень",
+        "group": "О животных",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Лисичка та журавель",
+        "group": "О животных",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16025"
+        ]
+      },
+      {
+        "title": "Лисичка, тиковка, скрипка та капкан",
+        "group": "О животных",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Як заєць ошукав ведмедя",
+        "group": "О животных",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Кривенька качечка",
+        "group": "Волшебные",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16007"
+        ]
+      },
+      {
+        "title": "Телесик",
+        "group": "Волшебные",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16003"
+        ]
+      },
+      {
+        "title": "Чабанець",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Котигорошко",
+        "group": "Волшебные",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16004"
+        ]
+      },
+      {
+        "title": "Кирило Кожум’яка",
+        "group": "Волшебные",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16018"
+        ]
+      },
+      {
+        "title": "Іван мужичий син",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Козак Мамарига",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Шовкова держава",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Три брати",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Три брати і кицька",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Про бідного парубка й царівну",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Царівна-жаба",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Ненькова сопілка й батіжок",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Іван-Побиван",
+        "group": "Волшебные",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16019"
+        ]
+      },
+      {
+        "title": "Летючий корабель",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Залізний вовк",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Яйце-райце",
+        "group": "Волшебные",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16014"
+        ]
+      },
+      {
+        "title": "Гайгай",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Ох!",
+        "group": "Волшебные",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16013"
+        ]
+      },
+      {
+        "title": "Чарівне горнятко",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Дарунки з трьох зернин",
+        "group": "Волшебные",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Мудра дівчина",
+        "group": "Социально-бытовые",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16023"
+        ]
+      },
+      {
+        "title": "Вівчар, пан, його внук та бичок",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Як Микола був коровою",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Піп та селянин",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Біда",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Язиката Хвеська",
+        "group": "Социально-бытовые",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16001"
+        ]
+      },
+      {
+        "title": "Калиточка",
+        "group": "Социально-бытовые",
+        "status": "candidate_title_match",
+        "candidateBookIds": [
+          "n16020"
+        ]
+      },
+      {
+        "title": "Закопане золото",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Ківш лиха",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Як чоловік учив ліниву жінку",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Про неробу Юрка, маминого синка",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Про майстра Іванка",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Дідова дочка й бабина дочка",
+        "group": "Социально-бытовые",
+        "status": "different_edition",
+        "candidateBookIds": [
+          "n16030"
+        ],
+        "id": "n16030",
+        "note": "1990 adds mother's death and spinning/false accusation episodes before forest; return order and ending also differ. 1918 full translation retained separately."
+      },
+      {
+        "title": "Про липку і зажерливу бабу",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Хліб і золото",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Бідний гуцул і старий опришок",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Названий батько",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Правда і Кривда",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      },
+      {
+        "title": "Золота пшениця",
+        "group": "Социально-бытовые",
+        "status": "pending_full_catalog_and_text_review"
+      }
+    ]
+  },
+  "reviewed": [
+    {
+      "id": "n16008",
+      "revision": 567683,
+      "source": "https://uk.wikisource.org/wiki/Баю-баю/Рукавичка",
+      "status": "reviewed_against_1918",
+      "note": "Compared full dialogue and final episode; minor wording and description corrected."
+    },
+    {
+      "id": "n16029",
+      "revision": 670725,
+      "source": "https://uk.wikisource.org/wiki/Баю-баю/Котик_і_півник",
+      "status": "reviewed_against_1918",
+      "note": "Restored omitted sentence, repeated plea and repeated verse; corrected binding action."
+    },
+    {
+      "id": "n16030",
+      "revision": 668396,
+      "source": "https://uk.wikisource.org/wiki/Баю-баю/Дідова_дочка_й_бабина_дочка",
+      "status": "reviewed_against_1918",
+      "note": "Checked narrative order and ending; polished idioms without merging in later edition."
+    }
+  ],
+  "limitations": "Not independent professional proofreading. No claim that LibCat edition is identical. Other translations not marked reviewed."
+}

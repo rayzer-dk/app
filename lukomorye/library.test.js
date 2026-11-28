@@ -25,7 +25,7 @@ test('all precached files are present and their final bytes match SHA-256',()=>{
  for(const [name,digest] of Object.entries(hashes))expect('sha256-'+createHash('sha256').update(read(join(server,name))).digest('base64')).toBe(digest);
  expect(read(join(server,'offline-shell.txt'),'utf8')).toBe(read(join(server,'index.html'),'utf8'));
  expect(existsSync(join(server,'sw.js'))).toBe(true);
- expect(json(join(server,'version.json')).version).toBe('2.0.0');
+ expect(json(join(server,'version.json')).version).toBe('2.0.1');
  expect(read(join(local,'index.html'),'utf8')).not.toContain('type="module"');
 });
 
@@ -70,7 +70,7 @@ test('curated expansion: no missing files, transparent exclusions, new annotatio
 
 test('childhood shelf, Russian retellings and existing aliases',()=>{const catalog=json(join(server,'catalog.json')),report=json(join(server,'CONTENT_REVIEW.json'));const shelf=catalog.filter(b=>b.collections?.includes('Сказки из нашего детства'));expect(shelf).toHaveLength(99);expect(report.childhood.added).toBe(30);for(const b of shelf.filter(b=>b.sourceType==='retelling')){expect(b.language).toBe('ru');expect(b.reference).toContain('Самостоятельный русский пересказ');expect(json(join(server,'books',b.id+'.json')).words).toBeGreaterThanOrEqual(180);}expect(catalog.find(b=>b.id==='af031').aliases).toContain('Жихарка');});
 
-test('source-attributed translations and transparent structural audit',()=>{const a=json(join(server,'TEXT_AUDIT.json')),c=json(join(server,'catalog.json'));expect(a.total).toBe(487);expect(a.fullTranslations).toBe(28);expect(a.retellingsPending).toBe(2);expect(a.exactDuplicates).toEqual([]);for(const b of c.filter(b=>b.sourceType==='translation')){expect(b.textRevision).toBe(2);expect(b.sourceUrl).toBe('https://uk.wikisource.org/w/index.php?oldid='+b.sourceRevision);expect(json(join(server,'books',b.id+'.json')).sourceUrl).toBe(b.sourceUrl);}});
+test('source-attributed translations and transparent structural audit',()=>{const a=json(join(server,'TEXT_AUDIT.json')),c=json(join(server,'catalog.json'));expect(a.total).toBe(487);expect(a.fullTranslations).toBe(28);expect(a.retellingsPending).toBe(2);expect(a.exactDuplicates).toEqual([]);for(const b of c.filter(b=>b.sourceType==='translation')){expect([2,3]).toContain(b.textRevision);expect(b.sourceUrl).toBe('https://uk.wikisource.org/w/index.php?oldid='+b.sourceRevision);expect(json(join(server,'books',b.id+'.json')).sourceUrl).toBe(b.sourceUrl);}});
 
 test('four further source translations preserve distinctive original episodes and endings',()=>{const book=id=>json(join(server,'books',id+'.json'));const plain=id=>book(id).blocks.map(b=>b.text).join('\n');expect(book('n16002').sourceRevision).toBe(668411);expect(plain('n16002')).toContain('пока и растаял');expect(book('n16011').sourceRevision).toBe(488020);expect(plain('n16011')).toContain('гречневые галушки');expect(book('n16015').sourceRevision).toBe(94883);expect(plain('n16015')).toContain('двенадцать');expect(book('n16016').sourceRevision).toBe(94904);expect(plain('n16016')).toContain('я притихну');expect(book('n16016').words).toBeLessThan(250);});
 
@@ -90,4 +90,6 @@ test('new source-complete wolf and truth variants retain original endings',()=>{
 
 test('1918 Ukrainian cat and rooster variant retains the three abductions and final rescue',()=>{const d=json(join(server,'books','n16029.json'));expect(d.sourceRevision).toBe(670725);expect(d.words).toBeGreaterThan(450);expect(d.blocks.map(b=>b.text).join(' ')).toContain('Филиппок');expect(d.blocks.at(-1).text).toContain('снова жили вместе');});
 
-test('single-digit application version and 1918 stepdaughter record',()=>{expect(json(join(server,'version.json')).version).toMatch(/^\d\.\d\.\d$/);const d=json(join(server,'books','n16030.json'));expect(d.sourceRevision).toBe(668396);expect(d.words).toBeGreaterThan(1400);expect(d.blocks.at(-1).text).toContain('живая пришла');});
+test('single-digit application version and 1918 stepdaughter record',()=>{expect(json(join(server,'version.json')).version).toMatch(/^\d\.\d\.\d$/);const d=json(join(server,'books','n16030.json'));expect(d.sourceRevision).toBe(668396);expect(d.words).toBeGreaterThan(1400);expect(d.blocks.at(-1).text).toContain('живой вернулась');});
+
+test('reviewed translations retain source episodes and updated revisions',()=>{const c=json(join(server,'catalog.json'));for(const id of ['n16008','n16029','n16030'])expect(c.find(b=>b.id===id).textRevision).toBe(3);const d=json(join(server,'books','n16029.json'));const t=d.blocks.map(b=>b.text).join('\n');expect(t).toContain('Вот и хитрит');expect(t).toContain('Петушок, братик, отвори! Петушок, братик, отвори!');expect(t).toContain('Ой, у лиски, лиски новый двор');});
