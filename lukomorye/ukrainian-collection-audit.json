@@ -140,10 +140,13 @@
     },
     {
       "title": "Дідова дочка й бабина дочка",
-      "status": "historical_source_identified_translation_pending",
+      "status": "alternative_ukrainian_record",
       "candidateSource": "https://uk.wikisource.org/w/index.php?oldid=668396",
-      "note": "Full online transcription located; translation pending. Баю-баю, 1918",
-      "sourceRevision": 668396
+      "note": "Full translation of the 1918 transcription; comparison to requested printed edition pending.",
+      "sourceRevision": 668396,
+      "bookId": "n16030",
+      "sourceUrl": "https://uk.wikisource.org/w/index.php?oldid=668396",
+      "exactEditionVerified": false
     },
     {
       "title": "Телесик",

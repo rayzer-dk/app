@@ -1,0 +1,3 @@
+# Application versioning
+
+For every application in this repository, every new application release must use exactly three single decimal digits separated by dots (X.Y.Z, `^[0-9]\.[0-9]\.[0-9]$`). Increment Z by one; at 9, carry to Y and reset Z to 0; at Y=9, carry to X and reset Y and Z to 0. Example: 1.7.9 → 1.8.0; 1.9.9 → 2.0.0. Do not rewrite existing release history. Migrate legacy multi-digit versions to a strictly greater compliant version (e.g. 1.16.11 → 2.0.0). Apply consistently to manifests, UI, package metadata, archive names, update endpoints and CI. Compare versions numerically by component, not lexicographically. At 9.9.9, obtain explicit guidance before changing this scheme. This rule is for application release versions, not dependency versions.
